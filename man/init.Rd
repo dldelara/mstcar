@@ -2,7 +2,7 @@
 % Please edit documentation in R/auxfunc.R
 \name{init}
 \alias{init}
-\title{Initializes MSTCAR model for Gibbs sampling}
+\title{Initialize MSTCAR model for Gibbs sampling}
 \usage{
 init(
   data,
@@ -45,7 +45,7 @@ A list containing model data, neighbor data, priors, initial output,
 and auxiliary hyperparameters related to the data.
 }
 \description{
-Initializes MSTCAR model for Gibbs sampling
+Initialize MSTCAR model for Gibbs sampling
 }
 \examples{
 \code{init(data)}

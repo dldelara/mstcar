@@ -245,7 +245,7 @@ inicheck = function(mod, inits) {
   if (errct) stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
 }
 
-#' Initializes MSTCAR model for Gibbs sampling
+#' Initialize MSTCAR model for Gibbs sampling
 #'
 #' @param data List of binomial- or poisson-distributed data. Requires a list containing 2 objects:
 #' \code{n} and \code{Y}. \code{n} represents total population and \code{Y}
