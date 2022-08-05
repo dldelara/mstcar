@@ -58,5 +58,9 @@ remove.packages("mstcar")
 # Restart R to allow package installation
 devtools::install_github("dldelara/mstcar")
 ```
+
+## Beta
+This package is currently in the beta stage. All functions are currently public but will be made private once the package is more stable. In the meantime, each public function and dataset has documentation to help orient you to using the package.
+
 ## Thanks!
 Thanks for checking out the MSTCAR package. I hope you find it useful in your spatiotemporal modeling! Please feel free to give feedback on bugs, ways to make the package more accessible to use, and features you'd like to see added to the package.
