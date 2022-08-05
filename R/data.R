@@ -1,20 +1,16 @@
 #' Heart Attack Mortality Data in North Carolina
 #'
 #' A dataset containing counts for Myocardial Infarction (ICD-9 code 410.0)
-#' deaths in North Carolina counties for individuals in 4 age groups from 1979-1988. This
-#' dataset also contains the corresponding population counts and county FIPS codes.
-#' The variables are as follows:
+#' deaths in 100 North Carolina counties for individuals in 4 age groups across 10 years. This
+#' dataset also contains the corresponding population counts.
 #'
-#' @format a data frame with 100 rows and 6 variables:
+#' @format a list with two array objects:
 #'
 #' \describe{
-#'   \item{year}{year of death count (1979)}
-#'   \item{agegrp}{age group of individuals counted (65-74)}
-#'   \item{county}{name of county for event count}
-#'   \item{FIPS}{FIPS code for corresponding county name}
-#'   \item{deaths}{death count (1-129)}
-#'   \item{population}{population count (400-21061)}
+#'   \item{Y}{death count (1-884)}
+#'   \item{n}{population count (31-38243)}
 #' }
+#'
 #' @source \url{https://wonder.cdc.gov/cmf-icd9.html}
 "ncheart"
 
