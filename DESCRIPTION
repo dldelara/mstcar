@@ -10,5 +10,5 @@ Encoding: UTF-8
 LinkingTo: Rcpp, RcppArmadillo, RcppDist
 Imports: Rcpp, RcppArmadillo, RcppDist, spdep, matrixcalc, knitr
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr

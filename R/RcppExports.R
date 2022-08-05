@@ -37,12 +37,8 @@ acpt_vec <- function(f, Ng) {
     .Call(`_mstcar_acpt_vec`, f, Ng)
 }
 
-join_field_cube <- function(F, G) {
-    .Call(`_mstcar_join_field_cube`, F, G)
-}
-
-join_field_mat <- function(F, G) {
-    .Call(`_mstcar_join_field_mat`, F, G)
+get_outname <- function(name, dir, param, iter) {
+    .Call(`_mstcar_get_outname`, name, dir, param, iter)
 }
 
 #' Gibbs Sampler Updates
@@ -54,5 +50,9 @@ join_field_mat <- function(F, G) {
 #' and initial output
 gibbs_sampler <- function(mod, n_iter, n_loop = 0L, l = 0L) {
     invisible(.Call(`_mstcar_gibbs_sampler`, mod, n_iter, n_loop, l))
+}
+
+.load_samples <- function(mod, params, burn, thin, file_suff) {
+    .Call(`_mstcar_load_samples`, mod, params, burn, thin, file_suff)
 }
 

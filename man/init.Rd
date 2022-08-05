@@ -10,7 +10,6 @@ init(
   shp = NULL,
   priors = NULL,
   inits = NULL,
-  storage = c("append", "local"),
   dir = getwd(),
   name = "output",
   rho_up = FALSE,

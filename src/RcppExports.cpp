@@ -120,27 +120,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// join_field_cube
-arma::field<arma::cube> join_field_cube(arma::field<arma::cube> F, arma::field<arma::cube> G);
-RcppExport SEXP _mstcar_join_field_cube(SEXP FSEXP, SEXP GSEXP) {
+// get_outname
+String get_outname(String name, String dir, String param, int iter);
+RcppExport SEXP _mstcar_get_outname(SEXP nameSEXP, SEXP dirSEXP, SEXP paramSEXP, SEXP iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::field<arma::cube> >::type F(FSEXP);
-    Rcpp::traits::input_parameter< arma::field<arma::cube> >::type G(GSEXP);
-    rcpp_result_gen = Rcpp::wrap(join_field_cube(F, G));
-    return rcpp_result_gen;
-END_RCPP
-}
-// join_field_mat
-arma::field<arma::mat> join_field_mat(arma::field<arma::mat> F, arma::field<arma::mat> G);
-RcppExport SEXP _mstcar_join_field_mat(SEXP FSEXP, SEXP GSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::field<arma::mat> >::type F(FSEXP);
-    Rcpp::traits::input_parameter< arma::field<arma::mat> >::type G(GSEXP);
-    rcpp_result_gen = Rcpp::wrap(join_field_mat(F, G));
+    Rcpp::traits::input_parameter< String >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< String >::type dir(dirSEXP);
+    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type iter(iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_outname(name, dir, param, iter));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -157,6 +147,21 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// load_samples
+List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff);
+RcppExport SEXP _mstcar_load_samples(SEXP modSEXP, SEXP paramsSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< StringVector >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_samples(mod, params, burn, thin, file_suff));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_progress", (DL_FUNC) &_mstcar_progress, 4},
@@ -168,9 +173,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_Sig_eta_i", (DL_FUNC) &_mstcar_Sig_eta_i, 3},
     {"_mstcar_acpt_cube", (DL_FUNC) &_mstcar_acpt_cube, 4},
     {"_mstcar_acpt_vec", (DL_FUNC) &_mstcar_acpt_vec, 2},
-    {"_mstcar_join_field_cube", (DL_FUNC) &_mstcar_join_field_cube, 2},
-    {"_mstcar_join_field_mat", (DL_FUNC) &_mstcar_join_field_mat, 2},
+    {"_mstcar_get_outname", (DL_FUNC) &_mstcar_get_outname, 4},
     {"_mstcar_gibbs_sampler", (DL_FUNC) &_mstcar_gibbs_sampler, 4},
+    {"_mstcar_load_samples", (DL_FUNC) &_mstcar_load_samples, 5},
     {NULL, NULL, 0}
 };
 
