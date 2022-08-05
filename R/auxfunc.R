@@ -415,7 +415,7 @@ init = function(
 #' Gibbs Sampler Updates
 #'
 #' @param mod a model object created with the \code{init()} function.
-#' @param n_iter number of iterations to sample. Must be a multiple of 100 and be \u2265 \code{r}.
+#' @param n_iter number of iterations to sample. Must be a multiple of 100 and be ≥ \code{r}.
 #' @param r number of iterations to store in each batch. Must be a multiple of 100 and multiply evenly into \code{n_iter}.
 #' @examples
 #' \code{samples(mod_nc, 6000)}

@@ -9,7 +9,7 @@ samples(mod, n_iter, r = 100)
 \arguments{
 \item{mod}{a model object created with the \code{init()} function.}
 
-\item{n_iter}{number of iterations to sample. Must be a multiple of 100 and be \u2265 \code{r}.}
+\item{n_iter}{number of iterations to sample. Must be a multiple of 100 and be ≥ \code{r}.}
 
 \item{r}{number of iterations to store in each batch. Must be a multiple of 100 and multiply evenly into \code{n_iter}.}
 }
