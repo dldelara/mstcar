@@ -17,13 +17,9 @@ init(
 )
 }
 \arguments{
-\item{data}{List of data for analysis. Requires a list containing 2 objects:
+\item{data}{List of binomial- or poisson-distributed data. Requires a list containing 2 objects:
 \code{n} and \code{Y}. \code{n} represents total population and \code{Y}
-represents event data. Also takes optional object \code{shp}, which is a
-dataframe object that includes a variable called \code{geometry}. \code{geometry}
-observations include a list of each coordinate in the shapefile. This is required
-if \code{nb} or \code{nb$neigh} is not specified. Every region in \code{shp}
-must have at least one neighbor.}
+represents event data.}
 
 \item{nb}{Optional list of adjacency data, in WinBugs format. Requires a list containing 2 objects:
 \code{neigh} and \code{num}. \code{neigh} is a list of length \code{Ns},
@@ -31,17 +27,18 @@ the number of regions, describing the neighbors for each region. \code{num}
 is a vector of length \code{Ns} marking the number of neighbors in each region.
 \code{neigh} is required if \code{shp} is not defined in \code{data}.}
 
+\item{shp}{A dataframe object that includes a variable called \code{geometry}. \code{geometry}
+observations include a list of each coordinate in the shapefile. This is required
+if \code{nb} is not specified. Every region in \code{shp} must have at least one neighbor.}
+
 \item{priors}{Optional list of hyperparameters. If unspecified, will use default
-values. Requires a list containing 11 objects: \code{gamma}, \code{eta}, \code{Sig_b_i}, \code{at},
-\code{bt}, \code{nu}, \code{nu_0}, \code{G0} and optionally \code{a_rho}, \code{b_rho},
-and \code{delta}.}
+values. Requires a list containing at least 1 of 8 optional objects: \code{gamma}, \code{eta},
+\code{Sig_b_i}, \code{at}, \code{bt}, \code{nu}, \code{nu_0}, and \code{G0}. If \code{rho_up = TRUE},
+will also take \code{a_rho}, \code{b_rho}, and \code{delta}.}
 
 \item{inits}{Optional list of initial values for Gibbs sampler.
-If unspecified, will use default values. Requires a list containing 7 objects:
+If unspecified, will use default values. Requires a list containing at least 1 of 7 objects:
 \code{theta}, \code{beta}, \code{tau2}, \code{Gt}, \code{G}, \code{z}, and \code{rho}.}
-
-\item{n_adapt}{Specifies how many iterations to run the Gibbs sampler for
-burn-in.}
 }
 \value{
 A list containing model data, neighbor data, priors, initial output,
@@ -52,7 +49,6 @@ Initializes MSTCAR model for Gibbs sampling
 }
 \examples{
 \code{init(data)}
-\code{init(data = heart_us, nb = us_nb, n_adapt = 2000)}
-\code{init(heart_us, inits = us_inits)}
-\code{init(heart_us, nb = us_nb, priors = us_priors)}
+\code{init(data = ncheart, nb = ncnb)}
+\code{init(ncheart, shp = ncshp, priors = us_priors)}
 }

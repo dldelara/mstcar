@@ -247,24 +247,23 @@ inicheck = function(mod, inits) {
 
 #' Initializes MSTCAR model for Gibbs sampling
 #'
-#' @param data List of data for analysis. Requires a list containing 2 objects:
+#' @param data List of binomial- or poisson-distributed data. Requires a list containing 2 objects:
 #' \code{n} and \code{Y}. \code{n} represents total population and \code{Y}
-#' represents event data. Also takes optional object \code{shp}, which is a
-#' dataframe object that includes a variable called \code{geometry}. \code{geometry}
-#' observations include a list of each coordinate in the shapefile. This is required
-#' if \code{nb} or \code{nb$neigh} is not specified. Every region in \code{shp}
-#' must have at least one neighbor.
+#' represents event data.
 #' @param nb Optional list of adjacency data, in WinBugs format. Requires a list containing 2 objects:
 #' \code{neigh} and \code{num}. \code{neigh} is a list of length \code{Ns},
 #' the number of regions, describing the neighbors for each region. \code{num}
 #' is a vector of length \code{Ns} marking the number of neighbors in each region.
 #' \code{neigh} is required if \code{shp} is not defined in \code{data}.
+#' @param shp A dataframe object that includes a variable called \code{geometry}. \code{geometry}
+#' observations include a list of each coordinate in the shapefile. This is required
+#' if \code{nb} is not specified. Every region in \code{shp} must have at least one neighbor.
 #' @param priors Optional list of hyperparameters. If unspecified, will use default
-#' values. Requires a list containing 11 objects: \code{gamma}, \code{eta}, \code{Sig_b_i}, \code{at},
-#' \code{bt}, \code{nu}, \code{nu_0}, \code{G0} and optionally \code{a_rho}, \code{b_rho},
-#' and \code{delta}.
+#' values. Requires a list containing at least 1 of 8 optional objects: \code{gamma}, \code{eta},
+#' \code{Sig_b_i}, \code{at}, \code{bt}, \code{nu}, \code{nu_0}, and \code{G0}. If \code{rho_up = TRUE},
+#' will also take \code{a_rho}, \code{b_rho}, and \code{delta}.
 #' @param inits Optional list of initial values for Gibbs sampler.
-#' If unspecified, will use default values. Requires a list containing 7 objects:
+#' If unspecified, will use default values. Requires a list containing at least 1 of 7 objects:
 #' \code{theta}, \code{beta}, \code{tau2}, \code{Gt}, \code{G}, \code{z}, and \code{rho}.
 #' @return A list containing model data, neighbor data, priors, initial output,
 #' and auxiliary hyperparameters related to the data.
@@ -415,16 +414,12 @@ init = function(
 
 #' Gibbs Sampler Updates
 #'
-#' @param mod a model object, created with the \code{init()} function.
-#' @param n_iter number of iterations to append. Must be multiple of 100.
-#' @param r number of iterations to store in each batch. Must multiply evently into \code{n_iter} and be \u2265 \code{r}.
-#' @return A list containing model data, neighbor data, hyperparameters,
-#' and initial output
+#' @param mod a model object created with the \code{init()} function.
+#' @param n_iter number of iterations to sample. Must be a multiple of 100 and be \u2265 \code{r}.
+#' @param r number of iterations to store in each batch. Must be a multiple of 100 and multiply evenly into \code{n_iter}.
 #' @examples
-#' \code{init(data)}
-#' \code{init(data = heart_us, nb = us_nb, n_adapt = 2000)}
-#' \code{init(heart_us, inits = us_inits)}
-#' \code{init(heart_us, nb = us_nb, priors = us_priors)}
+#' \code{samples(mod_nc, 6000)}
+#' \code{samples(mod = mod_nc, n_iter = 1e4, r = 500)}
 samples = function(mod, n_iter, r = 100) {
   dirname = paste0(mod$params$dir, "/", mod$params$name)
   while ((r %% 100) != 0) {
@@ -463,8 +458,30 @@ samples = function(mod, n_iter, r = 100) {
   }
 }
 
-load_model = function(dir = getwd(), name = "output") return(readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds")))
+#' Load Model From Directory
+#'
+#' @param name the name assigned to the model in the \code{init} function.
+#' @param dir the directory where the model exists.
+#' @return A list containing model data, neighbor data, hyperparameters,
+#' and initial output
+#' @examples
+#' \code{load_model("heart_nc")}
+#' \code{load_model(name = "heart_nc", dir = getwd())}
+load_model = function(name, dir = getwd()) return(readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds")))
 
+#' Load Samples From Storage
+#'
+#' @param mod a model object created with the \code{init()} function.
+#' @param params a string vector of parameters to load samples for. \code{all} specifies all parameters.
+#' @param thin amount of thinning to be done on samples. Loads in every \code{thin} iteration of the samples.
+#' Must multiply evenly into 100.
+#' @param burn amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.
+#' @return A list containing samples for each parameter of interest.
+#' @examples
+#' \code{load_samples(mod_nc)}
+#' \code{load_samples(mod_nc, params = "all")}
+#' \code{load_samples(mod = mod_nc, params = "theta", thin = 10, burn = 2e3)}
+#' \code{load_samples(mod_nc, c("theta", "tau2", "Gt"), burn = 2e3)}
 load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn = 0) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
@@ -500,6 +517,15 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   return(output)
 }
 
+#' Calculate median estimates from samples
+#'
+#' @param rec_samples a list of samples created with the \code{load_samples()} function.
+#' @param params a string vector of parameters to load samples for. \code{all} specifies all parameters.
+#' @return A list containing median estimates for each parameter of interest.
+#' @examples
+#' \code{load_samples(output_nc)}
+#' \code{load_samples(output_nc, params = "all")}
+#' \code{load_samples(output_nc, c("theta", "tau2", "Gt"))}
 get_medians = function(rec_samples, params = c("all", names(rec_samples))) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)

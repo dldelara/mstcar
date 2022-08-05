@@ -134,6 +134,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sym_test
+arma::mat sym_test(arma::mat A);
+RcppExport SEXP _mstcar_sym_test(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(sym_test(A));
+    return rcpp_result_gen;
+END_RCPP
+}
 // gibbs_sampler
 void gibbs_sampler(List mod, int n_iter, int n_loop, int l);
 RcppExport SEXP _mstcar_gibbs_sampler(SEXP modSEXP, SEXP n_iterSEXP, SEXP n_loopSEXP, SEXP lSEXP) {
@@ -145,6 +156,36 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type l(lSEXP);
     gibbs_sampler(mod, n_iter, n_loop, l);
     return R_NilValue;
+END_RCPP
+}
+// output_cube
+arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff);
+RcppExport SEXP _mstcar_output_cube(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(output_cube(mod, param, burn, thin, file_suff));
+    return rcpp_result_gen;
+END_RCPP
+}
+// output_mat
+arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff);
+RcppExport SEXP _mstcar_output_mat(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(output_mat(mod, param, burn, thin, file_suff));
+    return rcpp_result_gen;
 END_RCPP
 }
 // load_samples
@@ -174,7 +215,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_acpt_cube", (DL_FUNC) &_mstcar_acpt_cube, 4},
     {"_mstcar_acpt_vec", (DL_FUNC) &_mstcar_acpt_vec, 2},
     {"_mstcar_get_outname", (DL_FUNC) &_mstcar_get_outname, 4},
+    {"_mstcar_sym_test", (DL_FUNC) &_mstcar_sym_test, 1},
     {"_mstcar_gibbs_sampler", (DL_FUNC) &_mstcar_gibbs_sampler, 4},
+    {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
+    {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
     {"_mstcar_load_samples", (DL_FUNC) &_mstcar_load_samples, 5},
     {NULL, NULL, 0}
 };

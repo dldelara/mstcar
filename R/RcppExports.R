@@ -41,15 +41,20 @@ get_outname <- function(name, dir, param, iter) {
     .Call(`_mstcar_get_outname`, name, dir, param, iter)
 }
 
-#' Gibbs Sampler Updates
-#'
-#' @param mod List of model including model data, neighbor data,
-#' hyperparameters, and output
-#' @param n_iter number of iterations to append
-#' @return A list containing model data, neighbor data, hyperparameters,
-#' and initial output
+sym_test <- function(A) {
+    .Call(`_mstcar_sym_test`, A)
+}
+
 gibbs_sampler <- function(mod, n_iter, n_loop = 0L, l = 0L) {
     invisible(.Call(`_mstcar_gibbs_sampler`, mod, n_iter, n_loop, l))
+}
+
+output_cube <- function(mod, param, burn, thin, file_suff) {
+    .Call(`_mstcar_output_cube`, mod, param, burn, thin, file_suff)
+}
+
+output_mat <- function(mod, param, burn, thin, file_suff) {
+    .Call(`_mstcar_output_mat`, mod, param, burn, thin, file_suff)
 }
 
 .load_samples <- function(mod, params, burn, thin, file_suff) {
