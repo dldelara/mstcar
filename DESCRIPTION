@@ -1,0 +1,14 @@
+Package: mstcar
+Type: Package
+Title: Runs a Gibbs Sampler for an MSTCAR Model
+Version: 0.1
+Author: David DeLara
+Maintainer: David DeLara <sfq1@cdc.gov>
+Description: This package takes Poisson or Binomial discrete spatial data and russ a Gibbs sampler for a Multivariate Spatiotemporal CAR model. Also provides tools to recover output and get median estimates.
+License: GPL (>= 2)
+Encoding: UTF-8
+LinkingTo: Rcpp, RcppArmadillo, RcppDist
+Imports: Rcpp, RcppArmadillo, RcppDist, spdep, matrixcalc, knitr
+LazyData: true
+RoxygenNote: 7.1.2
+VignetteBuilder: knitr
