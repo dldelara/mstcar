@@ -114,7 +114,7 @@ String get_outname(String name, String dir, String param, int iter) {
 	out_string.push_back(".txt");
 	return out_string;
 }
-
+//[[Rcpp::export]]
 arma::mat sym_test(arma::mat A) {
 	int p = A.n_rows;
 	for (int i = 0; i < (p - 1); i++) {
@@ -127,24 +127,6 @@ arma::mat sym_test(arma::mat A) {
 	}
 	return (A + A.t()) / 2;
 }
-
-
-
-
-
-
-// add diagnostic that saves "non-symmetric" matrices to list for post-analysis
-
-
-
-
-//' Gibbs Sampler Updates
-//'
-//' @param mod List of model including model data, neighbor data,
-//' hyperparameters, and output
-//' @param n_iter number of iterations to append
-//' @return A list containing model data, neighbor data, hyperparameters,
-//' and initial output
 //[[Rcpp::export]]
 void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	// Import data, parameters, and priors
@@ -389,7 +371,7 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	new_z    .save(get_outname(name, dir, "z"    , its + n_iter).get_cstring());
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
 }
-
+//[[Rcpp::export]]
 arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
 	int  its    = params["its"];
@@ -397,7 +379,6 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	String dir  = params["dir"];
 	field<cube> output_full;
 	field<cube> output_thin((its - burn) / thin);
-
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
@@ -408,7 +389,7 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	}
 	return output_thin;
 }
-
+//[[Rcpp::export]]
 arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
 	int  its    = params["its"];
@@ -416,7 +397,6 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	String dir  = params["dir"];
 	field<mat> output_full;
 	field<mat> output_thin((its - burn) / thin);
-
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
@@ -427,7 +407,6 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	}
 	return output_thin;
 }
-
 //[[Rcpp::export(".load_samples")]]
 List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff) {
 	List samples;

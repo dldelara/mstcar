@@ -266,15 +266,12 @@ inicheck = function(mod, inits) {
 #' @param inits Optional list of initial values for Gibbs sampler.
 #' If unspecified, will use default values. Requires a list containing 7 objects:
 #' \code{theta}, \code{beta}, \code{tau2}, \code{Gt}, \code{G}, \code{z}, and \code{rho}.
-#' @param n_adapt Specifies how many iterations to run the Gibbs sampler for
-#' burn-in.
 #' @return A list containing model data, neighbor data, priors, initial output,
 #' and auxiliary hyperparameters related to the data.
 #' @examples
 #' \code{init(data)}
-#' \code{init(data = heart_us, nb = us_nb, n_adapt = 2000)}
-#' \code{init(heart_us, inits = us_inits)}
-#' \code{init(heart_us, nb = us_nb, priors = us_priors)}
+#' \code{init(data = ncheart, nb = ncnb)}
+#' \code{init(ncheart, shp = ncshp, priors = us_priors)}
 init = function(
 	data,
 	nb = NULL,
@@ -416,6 +413,18 @@ init = function(
 .logit = function(x) return(log(x / (1 - x)))
 .expit = function(x) return(1 / (1 + exp(-x)))
 
+#' Gibbs Sampler Updates
+#'
+#' @param mod a model object, created with the \code{init()} function.
+#' @param n_iter number of iterations to append. Must be multiple of 100.
+#' @param r number of iterations to store in each batch. Must multiply evently into \code{n_iter} and be \u2265 \code{r}.
+#' @return A list containing model data, neighbor data, hyperparameters,
+#' and initial output
+#' @examples
+#' \code{init(data)}
+#' \code{init(data = heart_us, nb = us_nb, n_adapt = 2000)}
+#' \code{init(heart_us, inits = us_inits)}
+#' \code{init(heart_us, nb = us_nb, priors = us_priors)}
 samples = function(mod, n_iter, r = 100) {
   dirname = paste0(mod$params$dir, "/", mod$params$name)
   while ((r %% 100) != 0) {
