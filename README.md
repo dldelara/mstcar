@@ -9,7 +9,7 @@ A Multivariate Spatiotemporal Conditional Auto-Regressive (MSTCAR) model is a Ba
 
 MSTCAR is an R package is used to better understand binomial- or poisson-distributed spatial count data by calculating spatially smoothed estimates from a Gibbs sampler.
 
-### Features
+### Motivation and Features
 
 It is often very difficult to use an MSTCAR model in practice because it is 1. Very difficult to build without prior knowledge of spatiotemporal Bayesian hierarchical models, and 2. The complexity of the model makes it very computationally intensive. Because of this, There are several key ideas taken into consideration when creating the MSTCAR package:
 
