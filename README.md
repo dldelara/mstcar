@@ -29,7 +29,7 @@ To install the MSTCAR package, a few dependent packages are needed first. MSTCAR
 - [knitr](https://cran.r-project.org/package=knitr): Facilitates creation of package vignettes.
 - [matrixcalc](https://cran.r-project.org/package=matrixcalc): Used to check matrices in the initial model check.
 ##### Programs
-- [RTools](https://cran.r-project.org/bin/windows/Rtools/): C++ compiler for R. Necessary for Rcpp package.
+- [RTools](https://cran.r-project.org/bin/windows/Rtools/): C++ compiler for R. Necessary for Rcpp and its dependencies.
 
 ### Installation Instructions
 The MSTCAR package can be easily installed with a few lines of R code. From the R console, make sure that all the necessary dependencies are installed by running the following lines:
