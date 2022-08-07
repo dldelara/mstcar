@@ -138,7 +138,7 @@ pricheck = function(mod) {
     errct  = errct + 1
     errtxt = paste(errct, ": Param 'Sig_b_i' is not symmetric. Ensure Sig_b_i is symmetric or use default value")
     errout = c(errout, errtxt)
-  } else if (!matrixcalc::is.positive.definite(mod$priors$Sig_b_i)) {
+  } else if (any(round(eigen(mod$priors$Sig_b_i)$values, 10) <= 0)) {
     errct  = errct + 1
     errtxt = paste(errct, ": Param 'Sig_b_i' is not positive definite. Ensure Sig_b_i is positive definite or use default value")
     errout = c(errout, errtxt)
