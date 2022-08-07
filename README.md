@@ -24,7 +24,7 @@ To install the MSTCAR package, a few dependent packages are needed first. MSTCAR
 ##### Packages
 - [Rcpp](https://cran.r-project.org/package=Rcpp): The most important package for MSTCAR. MSTCAR relies heavily on C++ code for efficiency. Rcpp is a package that allows integration of C++ code into R.
 - [RcppArmadillo](https://cran.r-project.org/package=RcppArmadillo): This is an addon for Rcpp that facilitates matrix and array manipulation.
-- [RcppDist](https://cran.r-project.org/package=RcppDist): This is an addon for Rcpp that facilitates sampling of multivariate distribution.
+- [RcppDist](https://cran.r-project.org/package=RcppDist): This is an addon for Rcpp that facilitates sampling of multivariate distributions.
 - [spdep](https://cran.r-project.org/package=spdep): A package related to spatial dependence. Contains several tools that help articulate the spatial relationships of shapefiles.
 - [knitr](https://cran.r-project.org/package=knitr): Facilitates creation of package vignettes.
 ##### Programs
