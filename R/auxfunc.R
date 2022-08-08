@@ -241,7 +241,6 @@ inicheck = function(mod, inits) {
     errtxt = paste(errct, ": Param 'z' is invalid dimensions. Ensure dim(z) == dim(Y) or use default value")
     errout = c(errout, errtxt)
   }
-
   if (errct) stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
 }
 
@@ -277,8 +276,8 @@ init = function(
 	shp = NULL,
 	priors = NULL,
 	inits = NULL,
-	dir = getwd(),
 	name = "output",
+	dir = getwd(),
 	rho_up = FALSE,
 	method = c("binom", "pois")
 ) {
@@ -301,17 +300,16 @@ init = function(
   }
   if (!is.null(nbmiss)) cat("The following objects were created using defaults in 'nb':", paste(nbmiss, collapse = " "), "\n")
   nbcheck(mod)
-  mod$params$its    = 0
-  mod$params$rho_up = rho_up
   mod$params$method = method
-  mod$params$dNd    = dim(mod$data$Y)
-  Ng = dim(mod$data$Y)[1]
-  Nt = dim(mod$data$Y)[2]
+  mod$params$rho_up = rho_up
+  mod$params$its  = 0
+  mod$params$dNd  = dim(mod$data$Y)
   mod$params$I    = length(getislands(mod))
   mod$params$name = name
   mod$params$dir  = dir
   mod$nb$neigh    = sapply(mod$nb$neigh, \(x) x - 1) # translate neighbor information to zero-index
-
+  Ng = dim(mod$data$Y)[1]
+  Nt = dim(mod$data$Y)[2]
   # Prior parameter check
   primiss = NULL
   if (is.null(mod$priors$eta)) {
@@ -338,7 +336,6 @@ init = function(
     mod$priors$nu_0 = Ng + 2
     primiss = c(primiss, "nu_0")
   }
-  # add these to documentation
   if (is.null(mod$priors$G0_i)) {
     mod$priors$G0_i = diag(7, Ng)
     primiss = c(primiss, "G0_i")
@@ -367,7 +364,7 @@ init = function(
   # Initial value check
   initmiss = NULL
   if (is.null(mod$inits$theta)) {
-    if (method == "binom") mod$inits$theta = .logit(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
+    if (method == "binom") mod$inits$theta = .logit(ifelse(data$Y == 0 | data$n == 0 | data$Y >= data$n, sum(data$Y) / sum(data$n), data$Y / data$n))
     if (method == "pois" ) mod$inits$theta =    log(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
     initmiss = c(initmiss, "theta")
   }
@@ -403,7 +400,6 @@ init = function(
   }
   if (!is.null(initmiss)) cat("The following objects were created using defaults in 'inits':", paste(initmiss, collapse = " "), "\n")
   inicheck(mod, mod$inits)
-  mod$out = list()
   #plot(1:Nt, (data$Y / data$n)[1, , which.max(data$n[1, 1, ])] * 1e5, xlab = "Time", ylab = "Rate", main = "Change in Rates Across Time")
   cat("Model set up!\n")
   return(mod)
@@ -454,6 +450,8 @@ samples = function(mod, n_iter, r = 100) {
   l = n_iter / r
   for (n_loop in 1:l) {
     gibbs_sampler(mod, r, n_loop, l)
+    mod$params$suff = append(mod$params$suff, mod$params$its)
+
     saveRDS(mod, paste0(dirname, "/mod_", mod$params$name, ".Rds"))
   }
 }
@@ -491,15 +489,7 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   if (100  %% thin != 0) stop("'thin' must multiply evenly into 100. Please choose another value for 'thin'")
   if (burn %% 100  != 0) stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
 
-  dirname = paste0(mod$params$dir, "/", mod$params$name)
-  expr = paste0("^", mod$params$name, "_", params[1], "_[1-9]+[0-9]*\\.txt$")
-  file_suff = list.files(paste0(dirname, "/", params[1]))
-  file_suff = sub(paste0("^", mod$params$name, "_.+_"), "", file_suff)
-  file_suff = sub(".txt$", "", file_suff)
-  file_suff = unique(sort(as.numeric(file_suff)))
-  file_suff = file_suff[file_suff > burn]
-
-  output = .load_samples(mod, params, burn, thin, file_suff)
+  output = .load_samples(mod, params, burn, thin)
   output = lapply(output, simplify2array)
 
   if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]

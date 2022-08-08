@@ -236,12 +236,15 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 		}
 		// Update beta
 		// Add contingency for non-diagonal prior
-		tmz = sum(theta - z, 2);
-		for (int i = 0; i < Ng * Nt; i++) {
-			Sig_b_star = 1 / (Ns / tau2[i % Ng] + Sig_b_i.diag()[i]);
-			xi_star = Sig_b_star * (tmz[i] / tau2[i % Ng] + Sig_b_i.diag()[i] * eta[i]);
-			beta[i] = R::rnorm(xi_star, sqrt(Sig_b_star));
+		if (Sig_b_i.is_diagmat()) {
+			tmz = sum(theta - z, 2);
+			for (int i = 0; i < Ng * Nt; i++) {
+				Sig_b_star = 1 / (Ns / tau2[i % Ng] + Sig_b_i.diag()[i]);
+				xi_star = Sig_b_star * (tmz[i] / tau2[i % Ng] + Sig_b_i.diag()[i] * eta[i]);
+				beta[i] = R::rnorm(xi_star, sqrt(Sig_b_star));
+			}
 		}
+		
 		// Update tau2
 		for (int g = 0; g < Ng; g++) {
 			tbz = 0;
@@ -362,7 +365,6 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	if (rho_up) priors["delta"] = delta;
 	priors["gamma"] = gamma;
 	mod["priors"]   = priors;
-
 	new_theta.save(get_outname(name, dir, "theta", its + n_iter).get_cstring());
 	new_beta .save(get_outname(name, dir, "beta" , its + n_iter).get_cstring());
 	new_tau2 .save(get_outname(name, dir, "tau2" , its + n_iter).get_cstring());
@@ -372,16 +374,17 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
 }
 //[[Rcpp::export]]
-arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
+arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin) {
 	List params = mod["params"];
-	int  its    = params["its"];
+	vec suff    = params["suff"];
+	int its     = params["its"];
 	String name = params["name"];
 	String dir  = params["dir"];
 	field<cube> output_full;
 	field<cube> output_thin((its - burn) / thin);
 	int j = 0;
-	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
+	for (unsigned int it = 0; it < suff.n_elem; it++) {
+		output_full.load(get_outname(name, dir, param.get_cstring(), suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			output_thin[j] = output_full[i];
 			j++;
@@ -390,16 +393,17 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	return output_thin;
 }
 //[[Rcpp::export]]
-arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff) {
+arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin) {
 	List params = mod["params"];
-	int  its    = params["its"];
+	vec suff    = params["suff"];
+	int its     = params["its"];
 	String name = params["name"];
 	String dir  = params["dir"];
 	field<mat> output_full;
 	field<mat> output_thin((its - burn) / thin);
 	int j = 0;
-	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
+	for (unsigned int it = 0; it < suff.n_elem; it++) {
+		output_full.load(get_outname(name, dir, param.get_cstring(), suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			output_thin[j] = output_full[i];
 			j++;
@@ -408,16 +412,28 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	return output_thin;
 }
 //[[Rcpp::export(".load_samples")]]
-List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff) {
+List load_samples(List mod, StringVector params, int burn, int thin) {
 	List samples;
 	for (int p = 0; p < params.length(); p++) {
 		String param = params[p];
 		if ((param == "theta") | (param == "Gt") | (param == "z")) {
-			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin, file_suff);			
+			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin);			
 		} else {
-			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin, file_suff);			
+			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin);			
 		} 
 	}
 	return samples;
 }
-
+//[[Rcpp::export]]
+arma::cube acceptance_ratio(List mod) {
+	List params = mod["params"];
+	String name = params["name"];
+	String dir  = params["dir"];
+	vec dNd     = params["dNd"];
+	vec suff    = params["suff"];
+	int Ng      = dNd[0];
+	int Nt      = dNd[1];
+	int Ns      = dNd[2];
+	field<cube> theta = output_cube(mod, "theta", 0, 1);
+	return acpt_cube(theta, Ng, Nt, Ns);
+}

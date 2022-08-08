@@ -159,8 +159,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // output_cube
-arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff);
-RcppExport SEXP _mstcar_output_cube(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin);
+RcppExport SEXP _mstcar_output_cube(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -168,14 +168,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type param(paramSEXP);
     Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
     Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(output_cube(mod, param, burn, thin, file_suff));
+    rcpp_result_gen = Rcpp::wrap(output_cube(mod, param, burn, thin));
     return rcpp_result_gen;
 END_RCPP
 }
 // output_mat
-arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff);
-RcppExport SEXP _mstcar_output_mat(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin);
+RcppExport SEXP _mstcar_output_mat(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -183,14 +182,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type param(paramSEXP);
     Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
     Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(output_mat(mod, param, burn, thin, file_suff));
+    rcpp_result_gen = Rcpp::wrap(output_mat(mod, param, burn, thin));
     return rcpp_result_gen;
 END_RCPP
 }
 // load_samples
-List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff);
-RcppExport SEXP _mstcar_load_samples(SEXP modSEXP, SEXP paramsSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+List load_samples(List mod, StringVector params, int burn, int thin);
+RcppExport SEXP _mstcar_load_samples(SEXP modSEXP, SEXP paramsSEXP, SEXP burnSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -198,8 +196,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< StringVector >::type params(paramsSEXP);
     Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
     Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(load_samples(mod, params, burn, thin, file_suff));
+    rcpp_result_gen = Rcpp::wrap(load_samples(mod, params, burn, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acceptance_ratio
+arma::cube acceptance_ratio(List mod);
+RcppExport SEXP _mstcar_acceptance_ratio(SEXP modSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptance_ratio(mod));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -217,9 +225,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_get_outname", (DL_FUNC) &_mstcar_get_outname, 4},
     {"_mstcar_sym_test", (DL_FUNC) &_mstcar_sym_test, 1},
     {"_mstcar_gibbs_sampler", (DL_FUNC) &_mstcar_gibbs_sampler, 4},
-    {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
-    {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
-    {"_mstcar_load_samples", (DL_FUNC) &_mstcar_load_samples, 5},
+    {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 4},
+    {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 4},
+    {"_mstcar_load_samples", (DL_FUNC) &_mstcar_load_samples, 4},
+    {"_mstcar_acceptance_ratio", (DL_FUNC) &_mstcar_acceptance_ratio, 1},
     {NULL, NULL, 0}
 };
 

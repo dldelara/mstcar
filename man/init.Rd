@@ -10,8 +10,8 @@ init(
   shp = NULL,
   priors = NULL,
   inits = NULL,
-  dir = getwd(),
   name = "output",
+  dir = getwd(),
   rho_up = FALSE,
   method = c("binom", "pois")
 )

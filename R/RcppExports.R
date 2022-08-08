@@ -49,15 +49,19 @@ gibbs_sampler <- function(mod, n_iter, n_loop = 0L, l = 0L) {
     invisible(.Call(`_mstcar_gibbs_sampler`, mod, n_iter, n_loop, l))
 }
 
-output_cube <- function(mod, param, burn, thin, file_suff) {
-    .Call(`_mstcar_output_cube`, mod, param, burn, thin, file_suff)
+output_cube <- function(mod, param, burn, thin) {
+    .Call(`_mstcar_output_cube`, mod, param, burn, thin)
 }
 
-output_mat <- function(mod, param, burn, thin, file_suff) {
-    .Call(`_mstcar_output_mat`, mod, param, burn, thin, file_suff)
+output_mat <- function(mod, param, burn, thin) {
+    .Call(`_mstcar_output_mat`, mod, param, burn, thin)
 }
 
-.load_samples <- function(mod, params, burn, thin, file_suff) {
-    .Call(`_mstcar_load_samples`, mod, params, burn, thin, file_suff)
+.load_samples <- function(mod, params, burn, thin) {
+    .Call(`_mstcar_load_samples`, mod, params, burn, thin)
+}
+
+acceptance_ratio <- function(mod) {
+    .Call(`_mstcar_acceptance_ratio`, mod)
 }
 
