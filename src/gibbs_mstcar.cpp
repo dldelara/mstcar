@@ -374,17 +374,16 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
 }
 //[[Rcpp::export]]
-arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin) {
+arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, vec file_suff) {
 	List params = mod["params"];
-	vec suff    = params["suff"];
 	int its     = params["its"];
 	String name = params["name"];
 	String dir  = params["dir"];
 	field<cube> output_full;
 	field<cube> output_thin((its - burn) / thin);
 	int j = 0;
-	for (unsigned int it = 0; it < suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), suff[it]).get_cstring());
+	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
+		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			output_thin[j] = output_full[i];
 			j++;
@@ -393,17 +392,16 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin) 
 	return output_thin;
 }
 //[[Rcpp::export]]
-arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin) {
+arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, vec file_suff) {
 	List params = mod["params"];
-	vec suff    = params["suff"];
 	int its     = params["its"];
 	String name = params["name"];
 	String dir  = params["dir"];
 	field<mat> output_full;
 	field<mat> output_thin((its - burn) / thin);
 	int j = 0;
-	for (unsigned int it = 0; it < suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), suff[it]).get_cstring());
+	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
+		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			output_thin[j] = output_full[i];
 			j++;
@@ -412,28 +410,40 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin) {
 	return output_thin;
 }
 //[[Rcpp::export(".load_samples")]]
-List load_samples(List mod, StringVector params, int burn, int thin) {
+List load_samples(List mod, StringVector params, int burn, int thin, vec file_suff) {
 	List samples;
 	for (int p = 0; p < params.length(); p++) {
 		String param = params[p];
 		if ((param == "theta") | (param == "Gt") | (param == "z")) {
-			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin);			
+			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin, file_suff);			
 		} else {
-			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin);			
+			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin, file_suff);			
 		} 
 	}
 	return samples;
 }
 //[[Rcpp::export]]
-arma::cube acceptance_ratio(List mod) {
+arma::cube acceptance_ratio_cube(List mod, vec file_suff, int burn) {
 	List params = mod["params"];
 	String name = params["name"];
 	String dir  = params["dir"];
 	vec dNd     = params["dNd"];
-	vec suff    = params["suff"];
 	int Ng      = dNd[0];
 	int Nt      = dNd[1];
 	int Ns      = dNd[2];
-	field<cube> theta = output_cube(mod, "theta", 0, 1);
+	List samples = load_samples(mod, "theta", burn, 1, file_suff);
+	field<cube> theta = samples["theta"];
 	return acpt_cube(theta, Ng, Nt, Ns);
+}
+
+//[[Rcpp::export]]
+arma::rowvec acceptance_ratio_mat(List mod, vec file_suff, int burn) {
+	List params = mod["params"];
+	String name = params["name"];
+	String dir  = params["dir"];
+	vec dNd     = params["dNd"];
+	int Ng      = dNd[0];
+	List samples = load_samples(mod, "rho", burn, 1, file_suff);
+	field<mat> rho = samples["rho"];
+	return acpt_vec(rho, Ng);
 }

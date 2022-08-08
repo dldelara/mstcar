@@ -450,10 +450,19 @@ samples = function(mod, n_iter, r = 100) {
   l = n_iter / r
   for (n_loop in 1:l) {
     gibbs_sampler(mod, r, n_loop, l)
-    mod$params$suff = append(mod$params$suff, mod$params$its)
-
     saveRDS(mod, paste0(dirname, "/mod_", mod$params$name, ".Rds"))
   }
+}
+
+getsuff = function(mod, param, burn) {
+  dirname = paste0(getwd(), "/", mod$params$name)
+  expr = paste0("^", mod$params$name, "_", param, "_[1-9]+[0-9]*\\.txt$")
+  file_suff = list.files(paste0(dirname, "/", param))
+  file_suff = sub(paste0("^", mod$params$name, "_.+_"), "", file_suff)
+  file_suff = sub(".txt$", "", file_suff)
+  file_suff = unique(sort(as.numeric(file_suff)))
+  file_suff = file_suff[file_suff > burn]
+  return(file_suff)
 }
 
 #' Load Model From Directory
@@ -489,7 +498,7 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   if (100  %% thin != 0) stop("'thin' must multiply evenly into 100. Please choose another value for 'thin'")
   if (burn %% 100  != 0) stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
 
-  output = .load_samples(mod, params, burn, thin)
+  output = .load_samples(mod, params, burn, thin, getsuff(mod, params[1], burn))
   output = lapply(output, simplify2array)
 
   if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]
@@ -507,6 +516,21 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   return(output)
 }
 
+# add documentation for acceptance ratio stuff
+acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
+  params = match.arg(params, several.ok = TRUE)
+  params = unique(params)
+  if ("all" %in% params) params = c("theta", "rho")
+  if (!mod$params$rho_up) params = params[which(params != "rho")]
+  accept = NULL
+  if ("theta" %in% params) accept$theta = acceptance_ratio_cube(mod, getsuff(mod, "theta", burn), burn)
+  if ("rho"   %in% params) accept$rho   = acceptance_ratio_mat (mod, getsuff(mod, "rho"  , burn), burn)
+  return(accept)
+}
+
+
+# Maybe consoldiate this into recover_samples function???
+
 #' Calculate median estimates from samples
 #'
 #' @param rec_samples a list of samples created with the \code{load_samples()} function.
@@ -516,7 +540,7 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
 #' \code{load_samples(output_nc)}
 #' \code{load_samples(output_nc, params = "all")}
 #' \code{load_samples(output_nc, c("theta", "tau2", "Gt"))}
-get_medians = function(rec_samples, params = c("all", names(rec_samples))) {
+get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 0.95) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
   if ("all" %in% params) params = names(rec_samples)
