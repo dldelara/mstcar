@@ -4,7 +4,7 @@
 \alias{get_medians}
 \title{Calculate median estimates from samples}
 \usage{
-get_medians(rec_samples, params = c("all", names(rec_samples)))
+get_medians(rec_samples, params = c("all", names(rec_samples)), ci = 0.95)
 }
 \arguments{
 \item{rec_samples}{a list of samples created with the \code{load_samples()} function.}

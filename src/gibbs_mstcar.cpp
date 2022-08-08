@@ -374,7 +374,7 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
 }
 //[[Rcpp::export]]
-arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, vec file_suff) {
+arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
 	int its     = params["its"];
 	String name = params["name"];
@@ -392,7 +392,7 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	return output_thin;
 }
 //[[Rcpp::export]]
-arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, vec file_suff) {
+arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
 	int its     = params["its"];
 	String name = params["name"];
@@ -410,7 +410,7 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ve
 	return output_thin;
 }
 //[[Rcpp::export(".load_samples")]]
-List load_samples(List mod, StringVector params, int burn, int thin, vec file_suff) {
+List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff) {
 	List samples;
 	for (int p = 0; p < params.length(); p++) {
 		String param = params[p];
@@ -423,7 +423,7 @@ List load_samples(List mod, StringVector params, int burn, int thin, vec file_su
 	return samples;
 }
 //[[Rcpp::export]]
-arma::cube acceptance_ratio_cube(List mod, vec file_suff, int burn) {
+arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn) {
 	List params = mod["params"];
 	String name = params["name"];
 	String dir  = params["dir"];
@@ -437,7 +437,7 @@ arma::cube acceptance_ratio_cube(List mod, vec file_suff, int burn) {
 }
 
 //[[Rcpp::export]]
-arma::rowvec acceptance_ratio_mat(List mod, vec file_suff, int burn) {
+arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn) {
 	List params = mod["params"];
 	String name = params["name"];
 	String dir  = params["dir"];
