@@ -3,6 +3,7 @@
 using namespace Rcpp;
 using namespace arma;
 
+//' @export
 //[[Rcpp::export]]
 void progress(int s, int n_iter, int n, int l) {
   if (s == 0) {
@@ -20,34 +21,40 @@ void progress(int s, int n_iter, int n, int l) {
   }
   if ((s == n_iter - 1) & (n == l)) Rcout << "\n";
 }
+//' @export
 //[[Rcpp::export]]
 arma::vec cube2vec(arma::cube c) {
 	vec v(c.n_elem, fill::zeros);
 	for (unsigned int i = 0; i < c.n_elem; i++) v[i] = c[i];
 	return v;
 }
+//' @export
 //[[Rcpp::export]]
 arma::vec mat2vec(arma::mat m) {
 	vec v(m.n_elem, fill::zeros);
 	for (unsigned int i = 0; i < m.n_elem; i++) v[i] = m[i];
 	return v;
 }
+//' @export
 //[[Rcpp::export]]
 arma::mat vec2mat(arma::rowvec v, int Ng, int Nt) {
 	mat m(Ng, Nt, fill::zeros);
 	for (unsigned int i = 0; i < v.n_elem; i++) m[i] = v[i];
 	return m;
 }
+//' @export
 //[[Rcpp::export]]
 double logit(double x) {
 	double lx = log(x / (1 - x));
 	return lx;
 }
+//' @export
 //[[Rcpp::export]]
 double expit(double p) {
 	double ep = exp(p) / (1 + exp(p));
 	return ep;
 }
+//' @export
 //[[Rcpp::export]]
 arma::mat Sig_eta_i(arma::cube Gt_i, arma::rowvec rho, int Nt) {
 	int Ng = rho.n_elem;
@@ -73,6 +80,7 @@ arma::mat Sig_eta_i(arma::cube Gt_i, arma::rowvec rho, int Nt) {
 	}
 	return Sei;
 }
+//' @export
 //[[Rcpp::export]]
 arma::cube acpt_cube(arma::field<arma::cube> f, int Ng, int Nt, int Ns) {
 	int l = f.n_elem;
@@ -85,6 +93,7 @@ arma::cube acpt_cube(arma::field<arma::cube> f, int Ng, int Nt, int Ns) {
 	diff /= (l - 1);
 	return diff;
 }
+//' @export
 //[[Rcpp::export]]
 arma::rowvec acpt_vec(arma::field<arma::mat> f, int Ng) {
 	int l = f.n_elem;
@@ -97,6 +106,7 @@ arma::rowvec acpt_vec(arma::field<arma::mat> f, int Ng) {
 	diff /= (l - 1);
 	return diff;
 }
+//' @export
 //[[Rcpp::export]]
 String get_outname(String name, String dir, String param, int iter) {
 	String out_string;
@@ -114,6 +124,7 @@ String get_outname(String name, String dir, String param, int iter) {
 	out_string.push_back(".txt");
 	return out_string;
 }
+//' @export
 //[[Rcpp::export]]
 arma::mat sym_test(arma::mat A) {
 	int p = A.n_rows;
@@ -127,6 +138,7 @@ arma::mat sym_test(arma::mat A) {
 	}
 	return (A + A.t()) / 2;
 }
+//' @export
 //[[Rcpp::export]]
 void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	// Import data, parameters, and priors
@@ -373,6 +385,7 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	new_z    .save(get_outname(name, dir, "z"    , its + n_iter).get_cstring());
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
 }
+//' @export
 //[[Rcpp::export]]
 arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
@@ -391,6 +404,7 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	}
 	return output_thin;
 }
+//' @export
 //[[Rcpp::export]]
 arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff) {
 	List params = mod["params"];
@@ -422,6 +436,7 @@ List load_samples(List mod, StringVector params, int burn, int thin, arma::vec f
 	}
 	return samples;
 }
+//' @export
 //[[Rcpp::export]]
 arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn) {
 	List params = mod["params"];
@@ -435,7 +450,7 @@ arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn) {
 	field<cube> theta = samples["theta"];
 	return acpt_cube(theta, Ng, Nt, Ns);
 }
-
+//' @export
 //[[Rcpp::export]]
 arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn) {
 	List params = mod["params"];

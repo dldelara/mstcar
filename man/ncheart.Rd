@@ -3,7 +3,7 @@
 \docType{data}
 \name{ncheart}
 \alias{ncheart}
-\title{Heart Attack Mortality Data in North Carolina}
+\title{North Carolina Heart Attack Mortality Data}
 \format{
 a list with two array objects:
 
@@ -20,7 +20,7 @@ ncheart
 }
 \description{
 A dataset containing counts for Myocardial Infarction (ICD-9 code 410.0)
-deaths in 100 North Carolina counties for individuals in 4 age groups across 10 years. This
+deaths in all 100 North Carolina counties for individuals in 4 age groups across 10 years. This
 dataset also contains the corresponding population counts.
 }
 \keyword{datasets}
