@@ -10,10 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
 The MSTCAR package is designed to make the implementation of MSTCAR models both quick and accessible to end-users who may not have experience with Bayesian statistics or spatial analysis.
