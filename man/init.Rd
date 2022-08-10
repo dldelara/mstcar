@@ -39,6 +39,17 @@ will also take \code{a_rho}, \code{b_rho}, and \code{delta}.}
 \item{inits}{Optional list of initial values for Gibbs sampler.
 If unspecified, will use default values. Requires a list containing at least 1 of 7 objects:
 \code{theta}, \code{beta}, \code{tau2}, \code{Gt}, \code{G}, \code{z}, and \code{rho}.}
+
+\item{name}{the name given to the model. This will decide the name of the directory that's created
+for the model output.}
+
+\item{dir}{the directory that the model will be saved to. Defaults to \code{getwd()}.}
+
+\item{rho_up}{decides whether \code{rho} will be updated or treated as a constant.}
+
+\item{method}{decides which method to use to calculate samples for the \code{theta} Metropolis
+updates: \code{method = "binom"} will do Binomial updates and \code{method = "pois"} will do
+Poisson updates.}
 }
 \value{
 A list containing model data, neighbor data, priors, initial output,
@@ -48,7 +59,9 @@ and auxiliary hyperparameters related to the data.
 Initialize MSTCAR model for Gibbs sampling
 }
 \examples{
-\code{init(data)}
-\code{init(data = ncheart, nb = ncnb)}
-\code{init(ncheart, shp = ncshp, priors = us_priors)}
+\dontrun{
+init(data)
+init(data = ncheart, nb = ncnb)
+init(ncheart, shp = ncshp, priors = us_priors)
+}
 }

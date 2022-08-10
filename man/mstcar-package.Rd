@@ -24,7 +24,3 @@ Maintainer: \packageMaintainer{mstcar}
 ~~ Literature or other references for background information ~~
 }
 \keyword{ package }
-\seealso{
-}
-\examples{
-}

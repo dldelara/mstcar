@@ -274,9 +274,12 @@ inicheck = function(mod, inits) {
 #' @return A list containing model data, neighbor data, priors, initial output,
 #' and auxiliary hyperparameters related to the data.
 #' @examples
+#' \dontrun{
 #' init(data)
 #' init(data = ncheart, nb = ncnb)
 #' init(ncheart, shp = ncshp, priors = us_priors)
+#' }
+
 init = function(
 	data,
 	nb = NULL,
@@ -421,8 +424,11 @@ init = function(
 #' @param n_iter number of iterations to sample. Must be a multiple of 100 and be ≥ \code{r}.
 #' @param r number of iterations to store in each batch. Must be a multiple of 100 and multiply evenly into \code{n_iter}.
 #' @examples
+#' \dontrun{
 #' samples(mod_nc, 6000)
 #' samples(mod = mod_nc, n_iter = 1e4, r = 500)
+#' }
+
 samples = function(mod, n_iter, r = 100) {
   dirname = paste0(mod$params$dir, "/", mod$params$name)
   while ((r %% 100) != 0) {
@@ -479,8 +485,10 @@ getsuff = function(mod, param, burn) {
 #' @return A list containing model data, neighbor data, hyperparameters,
 #' and initial output
 #' @examples
+#' \dontrun{
 #' load_model("heart_nc")
 #' load_model(name = "heart_nc", dir = getwd())
+#' }
 load_model = function(name, dir = getwd()) return(readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds")))
 
 #' Load Samples From Storage
@@ -492,10 +500,12 @@ load_model = function(name, dir = getwd()) return(readRDS(paste0(dir, "/", name,
 #' @param burn amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.
 #' @return A list containing samples for each parameter of interest.
 #' @examples
+#' \dontrun{
 #' load_samples(mod_nc)
 #' load_samples(mod_nc, params = "all")
 #' load_samples(mod = mod_nc, params = "theta", thin = 10, burn = 2e3)
 #' load_samples(mod_nc, c("theta", "tau2", "Gt"), burn = 2e3)
+#' }
 load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn = 0) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
@@ -545,9 +555,11 @@ acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
 #' @param ci the credible interval to be calculated for estimates.
 #' @return A list containing median estimates for each parameter of interest.
 #' @examples
+#' \dontrun{
 #' load_samples(output_nc)
 #' load_samples(output_nc, params = "all")
 #' load_samples(output_nc, c("theta", "tau2", "Gt"))
+#' }
 get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 0.95) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)

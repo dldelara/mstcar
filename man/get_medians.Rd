@@ -10,6 +10,8 @@ get_medians(rec_samples, params = c("all", names(rec_samples)), ci = 0.95)
 \item{rec_samples}{a list of samples created with the \code{load_samples()} function.}
 
 \item{params}{a string vector of parameters to load samples for. \code{all} specifies all parameters.}
+
+\item{ci}{the credible interval to be calculated for estimates.}
 }
 \value{
 A list containing median estimates for each parameter of interest.
@@ -18,7 +20,9 @@ A list containing median estimates for each parameter of interest.
 Calculate median estimates from samples
 }
 \examples{
-\code{load_samples(output_nc)}
-\code{load_samples(output_nc, params = "all")}
-\code{load_samples(output_nc, c("theta", "tau2", "Gt"))}
+\dontrun{
+load_samples(output_nc)
+load_samples(output_nc, params = "all")
+load_samples(output_nc, c("theta", "tau2", "Gt"))
+}
 }

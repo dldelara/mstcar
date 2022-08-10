@@ -1,14 +1,23 @@
 Package: mstcar
 Type: Package
-Title: Runs a Gibbs Sampler for an MSTCAR Model
+Title: Gibbs Sampler for MSTCAR Spatiotemporal Models
 Version: 0.1
 Author: David DeLara
 Maintainer: David DeLara <sfq1@cdc.gov>
 Description: This package takes Poisson or Binomial discrete spatial data and runs a Gibbs sampler for a Multivariate Spatiotemporal CAR model. Also provides tools to load output and get median estimates.
 License: GPL (>= 2)
 Encoding: UTF-8
-LinkingTo: Rcpp, RcppArmadillo, RcppDist
-Imports: Rcpp, RcppArmadillo, RcppDist, spdep, knitr
+LinkingTo: 
+	Rcpp, 
+	RcppArmadillo, 
+	RcppDist
+Imports:
+	Rcpp,
+	RcppArmadillo,
+	RcppDist, 
+	spdep
+Suggests:
+	rmarkdown
 LazyData: true
 RoxygenNote: 7.2.1
 VignetteBuilder: knitr

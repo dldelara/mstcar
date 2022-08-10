@@ -17,6 +17,8 @@ samples(mod, n_iter, r = 100)
 Gibbs Sampler Updates
 }
 \examples{
-\code{samples(mod_nc, 6000)}
-\code{samples(mod = mod_nc, n_iter = 1e4, r = 500)}
+\dontrun{
+samples(mod_nc, 6000)
+samples(mod = mod_nc, n_iter = 1e4, r = 500)
+}
 }

@@ -19,6 +19,8 @@ and initial output
 Load Model From Directory
 }
 \examples{
-\code{load_model("heart_nc")}
-\code{load_model(name = "heart_nc", dir = getwd())}
+\dontrun{
+load_model("heart_nc")
+load_model(name = "heart_nc", dir = getwd())
+}
 }

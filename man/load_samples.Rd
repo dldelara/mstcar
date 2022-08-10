@@ -23,8 +23,10 @@ A list containing samples for each parameter of interest.
 Load Samples From Storage
 }
 \examples{
-\code{load_samples(mod_nc)}
-\code{load_samples(mod_nc, params = "all")}
-\code{load_samples(mod = mod_nc, params = "theta", thin = 10, burn = 2e3)}
-\code{load_samples(mod_nc, c("theta", "tau2", "Gt"), burn = 2e3)}
+\dontrun{
+load_samples(mod_nc)
+load_samples(mod_nc, params = "all")
+load_samples(mod = mod_nc, params = "theta", thin = 10, burn = 2e3)
+load_samples(mod_nc, c("theta", "tau2", "Gt"), burn = 2e3)
+}
 }
