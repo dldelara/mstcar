@@ -2,70 +2,70 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 progress <- function(s, n_iter, n, l) {
-    invisible(.Call(`_mstcar_progress`, s, n_iter, n, l))
+    invisible(.Call('_mstcar_progress', PACKAGE = 'mstcar', s, n_iter, n, l))
 }
 
 cube2vec <- function(c) {
-    .Call(`_mstcar_cube2vec`, c)
+    .Call('_mstcar_cube2vec', PACKAGE = 'mstcar', c)
 }
 
 mat2vec <- function(m) {
-    .Call(`_mstcar_mat2vec`, m)
+    .Call('_mstcar_mat2vec', PACKAGE = 'mstcar', m)
 }
 
 vec2mat <- function(v, Ng, Nt) {
-    .Call(`_mstcar_vec2mat`, v, Ng, Nt)
+    .Call('_mstcar_vec2mat', PACKAGE = 'mstcar', v, Ng, Nt)
 }
 
 logit <- function(x) {
-    .Call(`_mstcar_logit`, x)
+    .Call('_mstcar_logit', PACKAGE = 'mstcar', x)
 }
 
 expit <- function(p) {
-    .Call(`_mstcar_expit`, p)
+    .Call('_mstcar_expit', PACKAGE = 'mstcar', p)
 }
 
 Sig_eta_i <- function(Gt_i, rho, Nt) {
-    .Call(`_mstcar_Sig_eta_i`, Gt_i, rho, Nt)
+    .Call('_mstcar_Sig_eta_i', PACKAGE = 'mstcar', Gt_i, rho, Nt)
 }
 
 acpt_cube <- function(f, Ng, Nt, Ns) {
-    .Call(`_mstcar_acpt_cube`, f, Ng, Nt, Ns)
+    .Call('_mstcar_acpt_cube', PACKAGE = 'mstcar', f, Ng, Nt, Ns)
 }
 
 acpt_vec <- function(f, Ng) {
-    .Call(`_mstcar_acpt_vec`, f, Ng)
+    .Call('_mstcar_acpt_vec', PACKAGE = 'mstcar', f, Ng)
 }
 
 get_outname <- function(name, dir, param, iter) {
-    .Call(`_mstcar_get_outname`, name, dir, param, iter)
+    .Call('_mstcar_get_outname', PACKAGE = 'mstcar', name, dir, param, iter)
 }
 
 sym_test <- function(A) {
-    .Call(`_mstcar_sym_test`, A)
+    .Call('_mstcar_sym_test', PACKAGE = 'mstcar', A)
 }
 
 gibbs_sampler <- function(mod, n_iter, n_loop = 0L, l = 0L) {
-    invisible(.Call(`_mstcar_gibbs_sampler`, mod, n_iter, n_loop, l))
+    invisible(.Call('_mstcar_gibbs_sampler', PACKAGE = 'mstcar', mod, n_iter, n_loop, l))
 }
 
 output_cube <- function(mod, param, burn, thin, file_suff) {
-    .Call(`_mstcar_output_cube`, mod, param, burn, thin, file_suff)
+    .Call('_mstcar_output_cube', PACKAGE = 'mstcar', mod, param, burn, thin, file_suff)
 }
 
 output_mat <- function(mod, param, burn, thin, file_suff) {
-    .Call(`_mstcar_output_mat`, mod, param, burn, thin, file_suff)
+    .Call('_mstcar_output_mat', PACKAGE = 'mstcar', mod, param, burn, thin, file_suff)
 }
 
 .load_samples <- function(mod, params, burn, thin, file_suff) {
-    .Call(`_mstcar_load_samples`, mod, params, burn, thin, file_suff)
+    .Call('_mstcar_load_samples', PACKAGE = 'mstcar', mod, params, burn, thin, file_suff)
 }
 
 acceptance_ratio_cube <- function(mod, file_suff, burn) {
-    .Call(`_mstcar_acceptance_ratio_cube`, mod, file_suff, burn)
+    .Call('_mstcar_acceptance_ratio_cube', PACKAGE = 'mstcar', mod, file_suff, burn)
 }
 
 acceptance_ratio_mat <- function(mod, file_suff, burn) {
-    .Call(`_mstcar_acceptance_ratio_mat`, mod, file_suff, burn)
+    .Call('_mstcar_acceptance_ratio_mat', PACKAGE = 'mstcar', mod, file_suff, burn)
 }
 

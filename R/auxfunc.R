@@ -459,11 +459,11 @@ samples = function(mod, n_iter, r = 100) {
   for (par in pars) {
     if (!file.exists(paste0(dirname, "/", par))) dir.create(paste0(dirname, "/", par))
   }
-  if (mod$params$its == 0) saveRDS(mod$inits, paste0(dirname, "/", mod$params$name, "_0.Rds"))
+  if (mod$params$its == 0) saveRDS(mod$inits, paste0(dirname, "/", mod$params$name, "_0.Rds"), version = 2)
   l = n_iter / r
   for (n_loop in 1:l) {
     gibbs_sampler(mod, r, n_loop, l)
-    saveRDS(mod, paste0(dirname, "/mod_", mod$params$name, ".Rds"))
+    saveRDS(mod, paste0(dirname, "/mod_", mod$params$name, ".Rds"), version = 2)
   }
 }
 
