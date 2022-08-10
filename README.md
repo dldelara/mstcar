@@ -42,12 +42,12 @@ installr::install.Rtools()
 ```
 Then, the package can be easily installed from GitHub:
 ```sh
-install.packages("devtools")
-devtools::install_github("dldelara/mstcar")
+install.packages("remotes")
+remotes::install_github("dldelara/mstcar", build_vignettes = TRUE)
 ```
 If this is your first time using the MSTCAR package, check the introductory vignette to learn how to use the package:
 ```sh
-browseVignettes("mstcar")
+vignette("mstcar-intro")
 ```
 
 ### Updates
@@ -55,7 +55,7 @@ Updating the MSTCAR package is fairly simple. All that has to be done is remove 
 ```sh
 remove.packages("mstcar")
 # Restart R to allow package installation
-devtools::install_github("dldelara/mstcar")
+remotes::install_github("dldelara/mstcar", build_vignettes = TRUE)
 ```
 
 ## Beta
