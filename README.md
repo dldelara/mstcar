@@ -11,7 +11,7 @@ mstcar is an R package is used to better understand binomial- or poisson-distrib
 
 ### Motivation and Features
 
-It is often very difficult to use an MSTCAR model in practice because it is 1. Very difficult to build without prior knowledge of spatiotemporal Bayesian hierarchical models, and 2. The complexity of the model makes it very computationally intensive. Because of this, There are several key ideas taken into consideration when creating the MSTCAR package:
+It is often very difficult to use an MSTCAR model in practice because it is 1. Very difficult to build without prior knowledge of spatiotemporal Bayesian hierarchical models, and 2. The complexity of the model makes it very computationally intensive. Because of this, There are several key ideas taken into consideration when creating the mstcar package:
 
 - Designed to simply import count/population data for discrete regions and receive estimates smoothed by region, sociodemographic groups, and time periods.
 - Designed to be easy-to-use and accessible, even for people without experience with Bayesian hierarchical models.
