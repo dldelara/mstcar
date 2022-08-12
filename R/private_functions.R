@@ -1,4 +1,3 @@
-#' @export
 getislands = function(mod) {
   check = 1:mod$params$dNd[3]
   network_true = list()
@@ -21,7 +20,6 @@ getislands = function(mod) {
   }
   return(network_true)
 }
-#' @export
 nbcheck = function(mod) {
   # Check that all neighbor list objects are present
   chk  = c("num", "neigh")
@@ -68,7 +66,6 @@ nbcheck = function(mod) {
   }
   if (errct) stop(paste(errct, "error(s) found in list 'nb':\n", paste(errout, collapse = "\n ")))
 }
-#' @export
 datcheck = function(mod) {
   # Check that all data is present
   chk = c("Y", "n")
@@ -98,7 +95,6 @@ datcheck = function(mod) {
   }
   if (errct) stop(paste(errct, "error(s) found in list 'data':\n", paste(errout, collapse = "\n ")))
 }
-#' @export
 pricheck = function(mod) {
   Ng = mod$params$dNd[1]; Nt = mod$params$dNd[2]
   # Check that all priors are present
@@ -202,7 +198,6 @@ pricheck = function(mod) {
   }
   if (errct) stop(paste(errct, "error(s) found in list 'priors':\n", paste(errout, collapse = "\n ")))
 }
-#' @export
 inicheck = function(mod, inits) {
   Ng = mod$params$dNd[1]; Nt = mod$params$dNd[2]
   # Check that all inits are present
@@ -244,8 +239,6 @@ inicheck = function(mod, inits) {
   }
   if (errct) stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
 }
-
-#' @export
 getsuff = function(mod, param, burn) {
   dirname   = paste0(getwd(), "/", mod$params$name)
   expr      = paste0("^", mod$params$name, "_", param, "_[1-9]+[0-9]*\\.txt$")
