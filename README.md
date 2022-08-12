@@ -59,7 +59,7 @@ remotes::install_github("dldelara/mstcar", build_vignettes = TRUE)
 ```
 
 ## Beta
-This package is currently in the beta stage. All functions are currently public but will be made private once the package is more stable. In the meantime, each public function and dataset has documentation to help orient you to using the package, along with an introductory vignette to walk you through a simple analysis using the example data. In the future we plan to include:
+This package is currently in the beta stage. Each public function and dataset has documentation to help orient you to using the package, along with an introductory vignette to walk you through a simple analysis using the example data. For debugging purposes, private functions can be accessed with mstcar:::problem_function(). In the future we plan to include:
 - Vignettes covering each aspect of using the package;
 - A vignette going over the model itself, along with references to the original paper that the model/code is based off of; and
 - More features to make using the package as accessible as possible.
