@@ -59,7 +59,10 @@ remotes::install_github("dldelara/mstcar", build_vignettes = TRUE)
 ```
 
 ## Beta
-This package is currently in the beta stage. All functions are currently public but will be made private once the package is more stable. In the meantime, each public function and dataset has documentation to help orient you to using the package.
+This package is currently in the beta stage. All functions are currently public but will be made private once the package is more stable. In the meantime, each public function and dataset has documentation to help orient you to using the package, along with an introductory vignette to walk you through a simple analysis using the example data. In the future we plan to include:
+- Vignettes covering each aspect of using the package;
+- A vignette going over the model itself, along with references to the original paper that the model/code is based off of; and
+- More features to make using the package as accessible as possible.
 
 ## Thanks!
 Thanks for checking out the mstcar package. I hope you find it useful in your spatiotemporal modeling! Please feel free to give feedback on bugs, ways to make the package more accessible to use, and features you'd like to see added to the package.
