@@ -168,7 +168,6 @@ init = function(
   cat("Model set up!\n")
   return(mod)
 }
-
 #' Gibbs Sampler Updates
 #'
 #' @param mod a model object created with the \code{init()} function.
@@ -231,7 +230,6 @@ samples = function(mod, n_iter, r = 100) {
 #' }
 #' @export
 load_model = function(name, dir = getwd()) return(readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds")))
-
 #' Load Samples From Storage
 #'
 #' @param mod a model object created with the \code{init()} function.
@@ -274,7 +272,6 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   }
   return(output)
 }
-
 #' Calculate Acceptance Ratio for Metropolis Parameters
 #'
 #' @param mod a model object created with the \code{init()} function.
@@ -296,10 +293,9 @@ acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
   accept = NULL
   if ("theta" %in% params) accept$theta = acceptance_ratio_cube(mod, getsuff(mod, "theta", burn), burn)
   if ("rho"   %in% params) accept$rho   = acceptance_ratio_mat (mod, getsuff(mod, "rho"  , burn), burn)
+  if (any(c(accept) > 0.47) | any(c(accept) < 0.23)) warning("MCMC algorithm is still in its adaption phase. More iterations are required.\n")
   return(accept)
 }
-# Maybe consoldiate this into recover_samples function???
-
 #' Calculate median estimates from samples
 #'
 #' @param rec_samples a list of samples created with the \code{load_samples()} function.
@@ -320,7 +316,25 @@ get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 
   est = NULL
   for (nam in params) {
     d = 1:(length(dim(rec_samples[[nam]])) - 1)
-    est[[nam]] = apply(rec_samples[[nam]], d, median)
+    est[[nam]] = apply(rec_samples[[nam]], d, quantile, c(0.5, (1 - ci) / 2, 1 - (1 - ci) / 2))
   }
   return(est)
+}
+#' Calculate reliability of median estimates
+#'
+#' @param medians a list of medians created with the \code{get_medians()} function.
+#' @param params a string vector of parameters to load samples for. \code{all} specifies all parameters.
+#' @return A list containing median estimates for each parameter of interest.
+#' @examples
+#' \dontrun{
+#' get_reliability(medians_nc)
+#' get_reliability(medians_nc, c("theta", "tau2", "Gt"))
+#' }
+#' @export
+get_reliability = function(medians, params = c("all", names(medians))) {
+  params = match.arg(params, several.ok = TRUE)
+  params = unique(params)
+  if ("all" %in% params) params = names(medians)
+  rel = lapply(medians[params], \(x) apply(x, 2:length(dim(x)), \(.) .[1] > (.[3] - .[2])))
+  return(rel)
 }

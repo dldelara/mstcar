@@ -340,19 +340,12 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 
 		for (int t = 0; t < Nt; t++) Gt.slice(t) = inv(Gt_i.slice(t));
 		// Store samples
-		if (method == "binom") {
-			new_theta[s] = exp(theta) / (1 + exp(theta));
-			new_beta [s] = exp(beta ) / (1 + exp(beta ));
-			new_z    [s] = exp(z    ) / (1 + exp(z    ));
-		}
-		if (method == "pois") {
-			new_theta[s] = exp(theta);
-			new_beta [s] = exp(beta);
-			new_z    [s] = exp(z);
-		}
-		new_tau2[s] = tau2;
-		new_Gt  [s] = Gt;
-		new_G   [s] = G;
+		new_theta[s] = theta;
+		new_beta [s] = beta;
+		new_z    [s] = z;
+		new_tau2 [s] = tau2;
+		new_Gt   [s] = Gt;
+		new_G    [s] = G;
 		if (rho_up) new_rho[s] = rho;
 		progress(s, n_iter, n_loop, l);
 	}
@@ -382,17 +375,26 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 }
 //[[Rcpp::export]]
 arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
-	List params = mod["params"];
-	int its     = params["its"];
-	String name = params["name"];
-	String dir  = params["dir"];
+	List params   = mod["params"];
+	int its       = params["its"];
+	String name   = params["name"];
+	String dir    = params["dir"];
+	String method = params["method"];
 	field<cube> output_full;
 	field<cube> output_thin((its - burn) / thin);
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
-			output_thin[j] = output_full[i];
+			if ((param == "theta") | (param == "z")) {
+				if (method == "binom") {
+					output_thin[j] = exp(output_full[i]) / (1 + exp(output_full[i]));
+				}
+				if (method == "pois") {
+					output_thin[j] = exp(output_full[i]);
+				}
+			}
+			else output_thin[j] = output_full[i];
 			j++;
 		}
 	}
@@ -400,17 +402,26 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 }
 //[[Rcpp::export]]
 arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff) {
-	List params = mod["params"];
-	int its     = params["its"];
-	String name = params["name"];
-	String dir  = params["dir"];
+	List params   = mod["params"];
+	int its       = params["its"];
+	String name   = params["name"];
+	String dir    = params["dir"];
+	String method = params["method"];
 	field<mat> output_full;
 	field<mat> output_thin((its - burn) / thin);
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
-			output_thin[j] = output_full[i];
+			if (param == "beta") {
+				if (method == "binom") {
+					output_thin[j] = exp(output_full[i]) / (1 + exp(output_full[i]));
+				}
+				if (method == "pois") {
+					output_thin[j] = exp(output_full[i]);
+				}
+			}
+			else output_thin[j] = output_full[i];
 			j++;
 		}
 	}

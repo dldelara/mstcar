@@ -6,7 +6,7 @@
 #' @author David DeLara <sfq1@@cdc.gov>
 #' @import Rcpp RcppArmadillo RcppDist spdep
 #' @importFrom Rcpp evalCpp
-#' @importFrom stats median
+#' @importFrom stats quantile
 #' @importFrom utils menu
 #' @useDynLib mstcar
 #' @name mstcar

@@ -31,16 +31,14 @@ Some quick notes about data setup:
 
 ## Functions {#sec-functions}
 
-mstcar comes with a set of functions to get you from dataset to estimates. Here is a brief overview of each function and its purpose:
+mstcar comes with a set of functions to get you from dataset to estimates. Here is a brief overview of the basic functions and their purpose:
 
 -   `init()`: Builds a model object with specified event data, adjacency structure, and model name to prepare sample generation;
 -   `samples()`: The Gibbs sampler function which saves your model and its samples to a local folder;
 -   `load_samples()`: Imports samples from the `samples()` function into your R session;
 -   `get_medians()`: Calculates median estimates for all samples loaded with `load_samples()`;
--   `acceptance_ratio()`: A diagnostic tool to help indicate if you need more samples;
--   `load_model()`: Loads a model object from a local folder.
 
-We will be covering all but the last two of these in this vignette, since they aren't entirely necessary for calculating estimates. `acceptance_ratio()` will be covered in `vignette("mstcar-diags")` and `load_model()` will be covered in `vignette("mstcar-samples")`.
+There are more functions, but they will not be covered here since they aren't entirely necessary for calculating estimates.
 
 ## Example Model - `init()` {#sec-init}
 
