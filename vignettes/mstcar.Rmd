@@ -1,0 +1,172 @@
+---
+title: "An Introduction to the mstcar Package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An Introduction to the mstcar Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+```
+
+## Overview {#sec-overview}
+
+The mstcar package is a tool that uses a Bayesian spatiotemporal model in conjunction with C++ to help you quickly and easily generate spatially smoothed estimates for your spatial data. This document introduces you to the basics of the mstcar package and shows you how to apply the basic functions to the included example data to get estimates.
+
+## Datasets {#sec-datasets}
+
+mstcar comes with three datasets: `ncheart`, `ncnb`, and `ncshp`. Each of these is related to the necessary components of an MSTCAR model. To run an MSTCAR model, two components are necessary:
+
+-   Discrete event counts for a parameter of interest, stratified by group, time period, and region, along with its corresponding population counts. This data may be Poisson- or Binomial-distributed. The example data is Binomial-distributed Mycardial Infarction deaths in four age groups from 1979-1988 in North Carolina. Reference `ncheart` to see how this data looks or `help(ncheart)` for more information on the dataset. For more information on preparing your event data, read `vignette("mstcar-event")`.
+
+-   Some mechanism to tell mstcar about the adjacency structure of the data. This is, in essence, which regions are neighbors with each other. mstcar will accept two types of input: a list with the adjacency structure or a shapefile. Shapefiles will only work if every region has at least 1 neighbor. Reference `ncnb` for an example adjacency structure list or `ncshp` for an example shapefile. For more information on preparing your adjacency data, read `vignette("mstcar-adj")`.
+
+Some quick notes about data setup:
+
+-   Event/population data must be organized in a very specific manner. The mstcar models can only accept 3-dimensional arrays: Socio/demographic groups must be on the rows, time periods must be on the columns, and regions must be on the matrix slices. Moreover, your event data's regions should be listed in the same order as your adjacency structure data.
+
+-   Every region must have at least one neighbor. Moreover, the adjacency structures must be listed in the same order as your count data.
+
+## Functions {#sec-functions}
+
+mstcar comes with a set of functions to get you from dataset to estimates. Here is a brief overview of each function and its purpose:
+
+-   `init()`: Builds a model object with specified event data, adjacency structure, and model name to prepare sample generation;
+-   `samples()`: The Gibbs sampler function which saves your model and its samples to a local folder;
+-   `load_samples()`: Imports samples from the `samples()` function into your R session;
+-   `get_medians()`: Calculates median estimates for all samples loaded with `load_samples()`;
+-   `acceptance_ratio()`: A diagnostic tool to help indicate if you need more samples;
+-   `load_model()`: Loads a model object from a local folder.
+
+We will be covering all but the last two of these in this vignette, since they aren't entirely necessary for calculating estimates. `acceptance_ratio()` will be covered in `vignette("mstcar-diags")` and `load_model()` will be covered in `vignette("mstcar-samples")`.
+
+## Example Model - `init()` {#sec-init}
+
+WIth an understanding of the example datasets and the functions, we can begin to run our first model. The example datasets are set up for us to run out-of-the-box:
+
+``` r
+mod_test = init(data = ncheart, nb = ncnb, shp = ncshp, name = "test_model", dir = getwd())
+```
+
+Here, we use the `init()` function to specify our model. `init()` accepts a few different arguments in this case:
+
+-   The `data` argument accepts our dataset with both the event data and the population data;
+-   The `nb` argument accepts our adjacency structure;
+-   The `shp` argument accepts our shapefile;
+-   The `name` argument specifies the unique name of our model; and
+-   The `dir` argument tells R where to store the model output. If you're unsure where this is, find this location by running `getwd()`.
+
+Note that we don't *need* to specify both `nb` and `shp` - the model will set up properly without it. Also, `init()` accepts more arguments than are used here, but these are the only ones that are needed to get started. Also note that when we run the model, we get a couple of messages telling us stuff was created using the default settings. This is the model taking our input and generating parameters and initial values for us to get the best results from the model.
+
+If you want to learn more about the `init()` function, read `vignette("mstcar-init")`.
+
+## Example Model - `samples()` {#sec-samples}
+
+Once we have our model object set up, we can start getting samples. This is the heart of the mstcar package and what allows us to gather our final rate estimates. To get your samples, simply specify how many iterations you want:
+
+``` r
+samples(mod = mod_test, n_iter = 1000)
+```
+
+The `samples()` function takes your mod object and runs the mstcar Gibbs sampler. This Gibbs sampler gives us our samples. Here, we've run 1000 samples for our model. These samples are going to be saved in a folder called "test_model" in your working directory since this is the model name we specified in `init()`. These samples aren't being saved all at once: the `samples()` function creates 10 batches of 100 samples and saves the outputs inside of the `test_model` folder. The progress bar tells you how far `samples()` is in sampling a batch. The `samples()` function also saves the `mod_test` object to the `test_model` folder. This is important if you want to reload your model at a later date.
+
+Note that none of the samples are saved in the `mod_test` object. `mod_test` simply serves as an object that gives the `samples()` function instructions on what to sample. This is important beacuse if you have to stop sampling for some reason or if your computer crashes, you can easily recover the model without losing your samples. Also note that `samples()` doesn't need an = sign and therefore isn't defining any object on its own -- it's simply giving the code instructions to collect samples and save them locally.
+
+Let's say that we realize that our 1000 samples isn't enough. We can simply run the same command again to get, say, 5000 more samples for a 6000 sample total:
+
+``` r
+samples(mod = mod_test, n_iter = 5000)
+```
+
+The `samples()` function will add those 5000 new samples into the same folder as the first 1000.
+
+If you want to learn more about the `samples()` function, read `vignette("mstcar-samples")`.
+
+## Example Model - `load_samples()` {#sec-loadsamples}
+
+After `samples()` is done running and your samples have been saved to `mod_test`, you can bring the samples into R using the `load_samples()` function:
+
+``` r
+output = load_samples(mod = mod_test, thin = 10, burn = 2000)
+```
+
+Here, the `load_samples()` function is taking three important arguments:
+
+-   The `mod` argument accepts our model object created by `init()`;
+-   The `thin` argument tells us that we are only loading in every `thin` samples; and
+-   The `burn` argument specifies how many iterations to skip before importing samples.
+
+`thin` and `burn` work together to ensure that the estimates we get are sound. `thin`'s benefits are twofold: it ensures that our samples have low auto-correlation (more on that in `vignette("mstcar-diags")`), and when running mstcar for very large regions, e.g. the entire US, it reduces the data down to a more manageable size. `burn` specifies a period where we give the model a bit of time to "figure itself out" before using samples from it. In total, we have pulled in (6000 - 2000) / 10 = 400 samples. To learn more about post-Gibbs sampler diagnostics, such as sufficient sample size, read `vignette("mstcar-diags")`.
+
+If you want to learn more about the `load_samples()` function, read `vignette("mstcar-samples")`.
+
+## Example Model - `get_medians()` {#sec-getmedians}
+
+With our output loaded and readable by R, we can finally get our estimates. We simply put our `output` object into the `get_medians()` function:
+
+``` r
+estimates = get_medians(output)
+```
+
+This creates a list object with median estimates for all of our parameters of interest. In the future, this will also give the option to specify a credible interval for the estimates to test for reliability. The star of the show here is the `theta` parameter, as it represents our spatially smoothed rates:
+
+``` r
+estimates$theta
+```
+
+However, these numbers don't necessarily make sense as rates. How can you have a negative death percentage? This is because, at the very beginning, the `init()` function performed a logit-transformation on the event data to make it easier to sample. To set our data right, we simply have to do the inverse of a logit-transformation: an expit-transformation:
+
+``` r
+estimates$theta = expit(estimates$theta)
+estimates$theta
+```
+
+Note that, along with the `theta` estimates, `beta` and `z` are also logit-transformed. If you are interested in these estimates at the rate level, the `expit()` function can also be applied to them. To learn more about how the model works and why we did this logit-transformation, read `vignette("mstcar-model")`.
+
+Now our estimates have been transformed back into percentage rates. For this type of mortality data, it is common to observe the rates out of 100,000, so when observing your estimates, it may be worthy to also multiply the rates by 100,000:
+
+``` r
+estimates$theta * 1e5
+```
+
+You can also inspect rates by age group, year, or region:
+
+``` r
+estimates$theta[               , "1981", "37119"] # explore between age groups
+estimates$theta["55-64.all.all",       , "37119"] # explore between time periods
+estimates$theta["55-64.all.all", "1981",        ] # explore between counties
+```
+
+For more information about the median estimates, read `vignette("mstcar-medians")`.
+
+## Seeing the Results
+
+With our estimates finally in a form we can understand, we can use them to get a better picture of what is going on in each area of our state. We can make a map using `ggplot` (or your favorite mapping package) to see how the estimates were smoothed:
+
+``` r
+# Original Myocardial Infarction Death Rates in NC, Ages 55-64, 1979
+# Original Myocardial Infarction Death Rates in NC, Ages 55-64, 1979
+ggplot() +
+  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = (ncheart$Y / ncheart$n)[1, 1, ] * 1e5)) +
+  labs(
+    title = "Raw Myocardial Infarction Death Rates in NC, Ages 55-64, 1979",
+    fill = "Deaths per 100,000"
+  ) +
+  scale_fill_stepsn(colors = c("darkgreen", "yellow", "darkred"), breaks = seq(1200, 1800, length = 4))
+# Spatially Smoothed MI Death Rates in NC
+ggplot() +
+  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = expit(medians$theta)[1, 1, ] * 1e5)) +
+  labs(
+    title = "Smoothed Myocardial Infarction Death Rates in NC, Ages 55-64, 1979",
+    fill = "Deaths per 100,000"
+  ) +
+  scale_fill_stepsn(colors = c("darkgreen", "yellow", "darkred"), breaks = seq(1200, 1800, length = 4))
+```
+
+This map helps us see how mstcar smooths rates. Regions that were once on either the lower or upper extreme due to their unstable estimates are now stabilized thanks to mstcar. From here, we can get a better idea of regions to focus on. For example, in the first map, areas in the far south of the state seem to have high rates, but on the second map these regions are better off than we expected. On the flip side, many non-coastal eastern counties' rates have increased, indicating that that area may require more attention than previously thought. These are the kinds of inferences that can be made with the mstcar package and the main motivation for running this spatiotemporal model.
+
+## Final Thoughts
+
+Thank you for reading this far! This vignette introduces you to inputting data into the `init()` function, getting samples with the `samples()` function, loading those samples into R with the `load_samples()` function, and finally making a map with estimates gathered with the `get_medians()` function. What we've discussed here is just scratching the surface of the mstcar package -- the other package vignettes will dive deeper into the intricacies of each component of the package, into the construction of the model itself, and into properly diagnosing your model's output. All of these things together will ensure you get the most out of using the mstcar package.

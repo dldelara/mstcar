@@ -10,7 +10,7 @@ init(
   shp = NULL,
   priors = NULL,
   inits = NULL,
-  name = "output",
+  name,
   dir = getwd(),
   rho_up = FALSE,
   method = c("binom", "pois")

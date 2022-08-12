@@ -1,0 +1,17 @@
+---
+title: "Calculating the Parameter Medians"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Calculating the Parameter Medians}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is unfortunately not available yet. We hope to have this vignette written in the future.

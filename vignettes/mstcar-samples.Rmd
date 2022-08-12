@@ -1,0 +1,17 @@
+---
+title: "Gathering and Loading Samples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Gathering and Loading Samples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is unfortunately not available yet. We hope to have this vignette written in the future.

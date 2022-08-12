@@ -1,0 +1,17 @@
+---
+title: "Preparing Your Output For Use With the CODA Package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Preparing Your Output For Use With the CODA Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is unfortunately not available yet. We hope to have this vignette written in the future.

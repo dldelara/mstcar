@@ -21,12 +21,10 @@ vec2mat <- function(v, Ng, Nt) {
     .Call('_mstcar_vec2mat', PACKAGE = 'mstcar', v, Ng, Nt)
 }
 
-#' @export
 logit <- function(x) {
     .Call('_mstcar_logit', PACKAGE = 'mstcar', x)
 }
 
-#' @export
 expit <- function(p) {
     .Call('_mstcar_expit', PACKAGE = 'mstcar', p)
 }

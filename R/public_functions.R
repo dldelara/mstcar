@@ -36,12 +36,12 @@
 #' @export
 init = function(
     data,
-    nb = NULL,
-    shp = NULL,
+    nb     = NULL,
+    shp    = NULL,
     priors = NULL,
-    inits = NULL,
-    name = "output",
-    dir = getwd(),
+    inits  = NULL,
+    name,
+    dir    = getwd(),
     rho_up = FALSE,
     method = c("binom", "pois")
 ) {
@@ -128,21 +128,21 @@ init = function(
   # Initial value check
   initmiss = NULL
   if (is.null(mod$inits$theta)) {
-    if (method == "binom") mod$inits$theta = .logit(ifelse(data$Y == 0 | data$n == 0 | data$Y >= data$n, sum(data$Y) / sum(data$n), data$Y / data$n))
-    if (method == "pois" ) mod$inits$theta =    log(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
+    if (method == "binom") mod$inits$theta = logit(ifelse(data$Y == 0 | data$n == 0 | data$Y >= data$n, sum(data$Y) / sum(data$n), data$Y / data$n))
+    if (method == "pois" ) mod$inits$theta =   log(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
     initmiss = c(initmiss, "theta")
   }
   if (is.null(mod$inits$beta)) {
-    if (method == "binom") mod$inits$beta = .logit(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
-    if (method == "pois" ) mod$inits$beta =    log(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
+    if (method == "binom") mod$inits$beta = logit(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
+    if (method == "pois" ) mod$inits$beta =   log(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
     initmiss = c(initmiss, "beta")
   }
   if (is.null(mod$inits$tau2)) {
     mod$inits$tau2 = matrix(0.01, nrow = Ng)
-    initmiss   = c(initmiss, "tau2")
+    initmiss = c(initmiss, "tau2")
   }
   if (is.null(mod$inits$G)) {
-    mod$inits$G  = diag(Ng) / 7
+    mod$inits$G = diag(Ng) / 7
     initmiss = c(initmiss, "G")
   }
   if (is.null(mod$inits$Gt)) {
@@ -164,7 +164,7 @@ init = function(
   }
   if (!is.null(initmiss)) cat("The following objects were created using defaults in 'inits':", paste(initmiss, collapse = " "), "\n")
   inicheck(mod, mod$inits)
-  #plot(1:Nt, (data$Y / data$n)[1, , which.max(data$n[1, 1, ])] * 1e5, xlab = "Time", ylab = "Rate", main = "Change in Rates Across Time")
+  plot(1:Nt, (data$Y / data$n)[1, , which.max(data$n[1, 1, ])] * 1e5, xlab = "Time", ylab = "Rate", main = "Change in Rates Across Time")
   cat("Model set up!\n")
   return(mod)
 }
@@ -291,7 +291,7 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
 acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
-  if ("all" %in% params) params = c("theta", "rho")
+  if ("all" %in% params)  params = c("theta", "rho")
   if (!mod$params$rho_up) params = params[which(params != "rho")]
   accept = NULL
   if ("theta" %in% params) accept$theta = acceptance_ratio_cube(mod, getsuff(mod, "theta", burn), burn)
@@ -324,3 +324,10 @@ get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 
   }
   return(est)
 }
+
+# write documentation for logit and expit functions
+
+#' @export
+logit = function(x) return(log(x / (1 - x)))
+#' @export
+expit = function(x) return(1 / (1 + exp(-x)))

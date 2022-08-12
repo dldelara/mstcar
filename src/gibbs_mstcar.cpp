@@ -9,7 +9,7 @@ void progress(int s, int n_iter, int n, int l) {
   if (s == 0) {
     String progress(" Progress: |..................................................|");
     if (l > 0) Rcout << "Batch: " << n << "/" << l << progress.get_cstring() <<  "\r";
-    else      Rcout << progress.get_cstring() << "\r";
+    else       Rcout << progress.get_cstring() << "\r";
   }
   bool prog = false;
   if ((s + 1) % (n_iter / 50) == 0) prog = true;
@@ -17,7 +17,7 @@ void progress(int s, int n_iter, int n, int l) {
     String progress(" Progress: |..................................................|");
     for (int i = 0; i < round((s + 1) * 50.0 / n_iter); i++) progress.replace_first(".", "*");
     if (l > 0) Rcout << "Batch: " << n << "/" << l << progress.get_cstring() <<  "\r";
-    else      Rcout << progress.get_cstring() << "\r";
+    else       Rcout << progress.get_cstring() << "\r";
   }
   if ((s == n_iter - 1) & (n == l)) Rcout << "\n";
 }
@@ -42,13 +42,11 @@ arma::mat vec2mat(arma::rowvec v, int Ng, int Nt) {
 	for (unsigned int i = 0; i < v.n_elem; i++) m[i] = v[i];
 	return m;
 }
-//' @export
 //[[Rcpp::export]]
 double logit(double x) {
 	double lx = log(x / (1 - x));
 	return lx;
 }
-//' @export
 //[[Rcpp::export]]
 double expit(double p) {
 	double ep = exp(p) / (1 + exp(p));
@@ -206,22 +204,22 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	double bt_star;
 	double tbz;
 	double nu_G_star; // G
-	mat V_star(Ng, Ng, fill::zeros);
-	mat Sei(Ng * Nt, Ng * Nt, fill::zeros); // z
-	mat Taukt_mat(Ng * Nt, Ng * Nt, fill::zeros);
-	mat Sig_z_star;
-	vec sum_zj;
-	vec phi_star;
+	mat  V_star(Ng, Ng, fill::zeros);
+	mat  Sei(Ng * Nt, Ng * Nt, fill::zeros); // z
+	mat  Taukt_mat(Ng * Nt, Ng * Nt, fill::zeros);
+	mat  Sig_z_star;
+	vec  sum_zj;
+	vec  phi_star;
 	cube Psi_star(Ng, Ng, Nt, fill::zeros); // Gt_i
 	double nu_Gt_star;
-	mat sum_zjg;
-  mat r;
-	mat sr;
-  mat zpz;
-  vec zpz0;
-  vec z0;
-  vec zt0;
-  vec zt1;
+	mat  sum_zjg;
+  mat  r;
+	mat  sr;
+  mat  zpz;
+  vec  zpz0;
+  vec  z0;
+  vec  zt0;
+  vec  zt1;
   cube A(Ng, Ng, 4, fill::zeros);
 	cube gam_acpt; // Adaptive variance
 	field<cube> theta_a;
@@ -319,13 +317,13 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 				Sig_eta_ip = Sig_eta_i(Gt_i, rho_star, Nt) - Sig_eta_i(Gt_i, rho, Nt);
 				rb = 0;
 				for (int i = 0; i < Ns; i++) {
-					zi = mat2vec(z.slice(i));
-					szj = mat2vec(sum(z.slices(neigh[i]), 2) / num[i]);
+					zi    = mat2vec(z.slice(i));
+					szj   = mat2vec(sum(z.slices(neigh[i]), 2) / num[i]);
 					zmikt = zi - szj;
-					rb += (num[i] * (zi.t() * Sig_eta_ip * zmikt))[0];
+					rb   += (num[i] * (zi.t() * Sig_eta_ip * zmikt))[0];
 				}
 				rb /= 2;
-				rc = a_rho * log(rho_star[k] / rho[k]) + b_rho * log((1 - rho_star[k]) / (1 - rho[k]));
+				rc  = a_rho * log(rho_star[k] / rho[k]) + b_rho * log((1 - rho_star[k]) / (1 - rho[k]));
 				r_r = (Ns - I) * (Nt - 1) / 2 * ra - rb + rc;
 				if (exp(r_r) > R::runif(0, 1)) rho[k] = rho_star[k];
 			}
@@ -446,8 +444,8 @@ arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn) {
 	int Ng      = dNd[0];
 	int Nt      = dNd[1];
 	int Ns      = dNd[2];
-	List samples = load_samples(mod, "theta", burn, 1, file_suff);
-	field<cube> theta = samples["theta"];
+	List sample = load_samples(mod, "theta", burn, 1, file_suff);
+	field<cube> theta = sample["theta"];
 	return acpt_cube(theta, Ng, Nt, Ns);
 }
 //' @export
@@ -458,7 +456,7 @@ arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn) {
 	String dir  = params["dir"];
 	vec dNd     = params["dNd"];
 	int Ng      = dNd[0];
-	List samples = load_samples(mod, "rho", burn, 1, file_suff);
-	field<mat> rho = samples["rho"];
+	List sample = load_samples(mod, "rho", burn, 1, file_suff);
+	field<mat> rho = sample["rho"];
 	return acpt_vec(rho, Ng);
 }

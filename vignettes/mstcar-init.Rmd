@@ -1,0 +1,17 @@
+---
+title: "Initializing Your Model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Initializing Your Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is unfortunately not available yet. We hope to have this vignette written in the future.

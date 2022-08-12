@@ -1,0 +1,17 @@
+---
+title: "The Nuts and Bolts of the MSTCAR Model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The Nuts and Bolts of the MSTCAR Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette is unfortunately not available yet. We hope to have this vignette written in the future.
