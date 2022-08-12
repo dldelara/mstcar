@@ -47,7 +47,7 @@ remotes::install_github("dldelara/mstcar", build_vignettes = TRUE)
 ```
 If this is your first time using the mstcar package, check the introductory vignette to learn how to use the package:
 ```sh
-vignette("mstcar-intro")
+vignette("mstcar")
 ```
 
 ### Updates
