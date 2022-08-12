@@ -340,12 +340,19 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 
 		for (int t = 0; t < Nt; t++) Gt.slice(t) = inv(Gt_i.slice(t));
 		// Store samples
-		new_theta[s] = theta;
-		new_beta [s] = beta;
-		new_tau2 [s] = tau2;
-		new_Gt   [s] = Gt;
-		new_z    [s] = z;
-		new_G    [s] = G;
+		if (method == "binom") {
+			new_theta[s] = exp(theta) / (1 + exp(theta));
+			new_beta [s] = exp(beta ) / (1 + exp(beta ));
+			new_z    [s] = exp(z    ) / (1 + exp(z    ));
+		}
+		if (method == "pois") {
+			new_theta[s] = exp(theta);
+			new_beta [s] = exp(beta);
+			new_z    [s] = exp(z);
+		}
+		new_tau2[s] = tau2;
+		new_Gt  [s] = Gt;
+		new_G   [s] = G;
 		if (rho_up) new_rho[s] = rho;
 		progress(s, n_iter, n_loop, l);
 	}

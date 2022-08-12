@@ -324,10 +324,3 @@ get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 
   }
   return(est)
 }
-
-# write documentation for logit and expit functions
-
-#' @export
-logit = function(x) return(log(x / (1 - x)))
-#' @export
-expit = function(x) return(1 / (1 + exp(-x)))

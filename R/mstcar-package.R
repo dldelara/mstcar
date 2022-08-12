@@ -3,7 +3,7 @@
 #' Gibbs Sampler for MSTCAR Spatiotemporal Models
 #'
 #' @docType package
-#' @author David DeLara <sfq1@cdc.gov>
+#' @author David DeLara <sfq1@@cdc.gov>
 #' @import Rcpp RcppArmadillo RcppDist spdep
 #' @importFrom Rcpp evalCpp
 #' @importFrom stats median

@@ -116,16 +116,7 @@ This creates a list object with median estimates for all of our parameters of in
 estimates$theta
 ```
 
-However, these numbers don't necessarily make sense as rates. How can you have a negative death percentage? This is because, at the very beginning, the `init()` function performed a logit-transformation on the event data to make it easier to sample. To set our data right, we simply have to do the inverse of a logit-transformation: an expit-transformation:
-
-``` r
-estimates$theta = expit(estimates$theta)
-estimates$theta
-```
-
-Note that, along with the `theta` estimates, `beta` and `z` are also logit-transformed. If you are interested in these estimates at the rate level, the `expit()` function can also be applied to them. To learn more about how the model works and why we did this logit-transformation, read `vignette("mstcar-model")`.
-
-Now our estimates have been transformed back into percentage rates. For this type of mortality data, it is common to observe the rates out of 100,000, so when observing your estimates, it may be worthy to also multiply the rates by 100,000:
+For this type of mortality data, it is common to observe the rates out of 100,000, so when observing your estimates, it may be worthy to also multiply the rates by 100,000:
 
 ``` r
 estimates$theta * 1e5

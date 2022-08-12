@@ -249,3 +249,4 @@ getsuff = function(mod, param, burn) {
   file_suff = file_suff[file_suff > burn]
   return(file_suff)
 }
+logit = function(x) return(log(x / (1 - x)))
