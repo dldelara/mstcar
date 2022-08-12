@@ -58,7 +58,9 @@ Here, we use the `init()` function to specify our model. `init()` accepts a few 
 -   The `name` argument specifies the unique name of our model; and
 -   The `dir` argument tells R where to store the model output. If you're unsure where this is, find this location by running `getwd()`.
 
-Note that we don't *need* to specify both `nb` and `shp` - the model will set up properly without it. Also, `init()` accepts more arguments than are used here, but these are the only ones that are needed to get started. Also note that when we run the model, we get a couple of messages telling us stuff was created using the default settings. This is the model taking our input and generating parameters and initial values for us to get the best results from the model.
+Note that we don't *need* to specify both `nb` and `shp` - the model will set up properly with only one of these. Also, `init()` accepts more arguments than are used here, but these are the only ones that are needed to get started. Also note that when we run the model, we get a couple of messages telling us stuff was created using the default settings. This is the model taking our input and generating parameters and initial values for us to get the best results from the model.
+
+Finally, you may notice a plot was generated at the end of model setup. This is one last double-check to make sure the data is set up correctly before running the model. It will have rate estimates per 100,000 for the highest-population region in your dataset across each year of your data. If the number of datapoints does not match up to the number of years in your dataset or if the changes in rates over time don't make a ton of sense, you may need to double-check your data input.
 
 If you want to learn more about the `init()` function, read `vignette("mstcar-init")`.
 
