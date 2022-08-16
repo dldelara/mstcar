@@ -391,7 +391,7 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		file = get_outname(name, dir, param.get_cstring(), file_suff[it]);
-		Rcout << "Pulling files from: " << file.get_cstring() << "\n";
+		Rcout << "Pulling files from: " << file.get_cstring() << "\n"; 
 		output_full.load(file.get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			if ((param == "theta") | (param == "z")) {
