@@ -385,11 +385,14 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	String name   = params["name"];
 	String dir    = params["dir"];
 	String method = params["method"];
+	String file;
 	field<cube> output_full;
 	field<cube> output_thin((its - burn) / thin);
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
+		file = get_outname(name, dir, param.get_cstring(), file_suff[it]);
+		Rcout << "Pulling files from: " << file.get_cstring() << "\n";
+		output_full.load(file.get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			if ((param == "theta") | (param == "z")) {
 				if (method == "binom") {
@@ -412,11 +415,14 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	String name   = params["name"];
 	String dir    = params["dir"];
 	String method = params["method"];
+	String file;
 	field<mat> output_full;
 	field<mat> output_thin((its - burn) / thin);
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
-		output_full.load(get_outname(name, dir, param.get_cstring(), file_suff[it]).get_cstring());
+		file = get_outname(name, dir, param.get_cstring(), file_suff[it]);
+		Rcout << "Pulling files from: " << file.get_cstring() << "\n";
+		output_full.load(file.get_cstring());
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			if (param == "beta") {
 				if (method == "binom") {
