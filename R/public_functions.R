@@ -166,7 +166,7 @@ init = function(
   inicheck(mod, mod$inits)
   plot(1:Nt, (data$Y / data$n)[1, , which.max(data$n[1, 1, ])] * 1e5, xlab = "Time", ylab = "Rate", main = "Change in Rates Across Time")
   cat("Model set up!\n")
-  return(mod)
+  mod
 }
 #' Gibbs Sampler Updates
 #'
@@ -229,7 +229,11 @@ samples = function(mod, n_iter, r = 100) {
 #' load_model(name = "heart_nc", dir = getwd())
 #' }
 #' @export
-load_model = function(name, dir = getwd()) return(readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds")))
+load_model = function(name, dir = getwd()) {
+  mod = readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds"))
+  mod$params$dir = gsub('(/)\\1+', '\\1', dir)
+  mod
+}
 #' Load Samples From Storage
 #'
 #' @param mod a model object created with the \code{init()} function.
@@ -276,7 +280,7 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
     if ("z"     %in% params) dimnames(output$z    ) = dims
     if ("rho"   %in% params) dimnames(output$rho  ) = dims[c(1, 4)]
   }
-  return(output)
+  output
 }
 #' Calculate Acceptance Ratio for Metropolis Parameters
 #'
@@ -300,7 +304,7 @@ acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
   if ("theta" %in% params) accept$theta = acceptance_ratio_cube(mod, getsuff(mod, "theta", burn), burn)
   if ("rho"   %in% params) accept$rho   = acceptance_ratio_mat (mod, getsuff(mod, "rho"  , burn), burn)
   if (any(c(accept) > 0.47) | any(c(accept) < 0.23)) warning("MCMC algorithm is still in its adaption phase. More iterations are required.\n")
-  return(accept)
+  accept
 }
 #' Calculate median estimates from samples
 #'
@@ -324,7 +328,7 @@ get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 
     d = 1:(length(dim(rec_samples[[nam]])) - 1)
     est[[nam]] = apply(rec_samples[[nam]], d, quantile, c(0.5, (1 - ci) / 2, 1 - (1 - ci) / 2))
   }
-  return(est)
+  est
 }
 #' Calculate reliability of median estimates
 #'
@@ -342,5 +346,5 @@ get_reliability = function(medians, params = c("all", names(medians))) {
   params = unique(params)
   if ("all" %in% params) params = names(medians)
   rel = lapply(medians[params], \(x) apply(x, 2:length(dim(x)), \(.) .[1] > (.[3] - .[2])))
-  return(rel)
+  rel
 }
