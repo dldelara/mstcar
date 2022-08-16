@@ -66,12 +66,12 @@ init = function(
   nbcheck(mod)
   mod$params$method = method
   mod$params$rho_up = rho_up
-  mod$params$its  = 0
-  mod$params$dNd  = dim(mod$data$Y)
-  mod$params$I    = length(getislands(mod))
-  mod$params$name = name
-  mod$params$dir  = dir
-  mod$nb$neigh    = sapply(mod$nb$neigh, \(x) x - 1) # translate neighbor information to zero-index
+  mod$params$its    = 0
+  mod$params$dNd    = dim(mod$data$Y)
+  mod$params$I      = length(getislands(mod))
+  mod$params$name   = name
+  mod$params$dir    = gsub('(/)\\1+', '\\1', dir)
+  mod$nb$neigh      = sapply(mod$nb$neigh, \(x) x - 1) # translate neighbor information to zero-index
   Ng = dim(mod$data$Y)[1]
   Nt = dim(mod$data$Y)[2]
   # Prior parameter check
@@ -128,7 +128,7 @@ init = function(
   # Initial value check
   initmiss = NULL
   if (is.null(mod$inits$theta)) {
-    if (method == "binom") mod$inits$theta = logit(ifelse(data$Y == 0 | data$n == 0 | data$Y >= data$n, sum(data$Y) / sum(data$n), data$Y / data$n))
+    if (method == "binom") mod$inits$theta = logit(ifelse((data$Y == 0) | (data$n == 0) | (data$Y >= data$n), sum(data$Y) / sum(data$n), data$Y / data$n))
     if (method == "pois" ) mod$inits$theta =   log(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
     initmiss = c(initmiss, "theta")
   }
@@ -251,9 +251,15 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   params = unique(params)
   if ("all" %in% params)  params = names(mod$inits)
   if (!mod$params$rho_up) params = params[which(params != "rho")]
-  if (burn >= mod$params$its) stop("'burn' too big. Choose a 'burn' that is smaller than the total number of samples")
-  if (100  %% thin != 0) stop("'thin' must multiply evenly into 100. Please choose another value for 'thin'")
-  if (burn %% 100  != 0) stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
+  if (burn >= mod$params$its) {
+    stop("'burn' too big. Choose a 'burn' that is smaller than the total number of samples")
+  }
+  if (100  %% thin != 0) {
+    stop("'thin' must multiply evenly into 100. Please choose another value for 'thin'")
+  }
+  if (burn %% 100  != 0) {
+    stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
+  }
 
   output = .load_samples(mod, params, burn, thin, getsuff(mod, params[1], burn))
   output = lapply(output, simplify2array)

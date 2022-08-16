@@ -11,6 +11,32 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// acceptance_ratio_cube
+arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn);
+RcppExport SEXP _mstcar_acceptance_ratio_cube(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_cube(mod, file_suff, burn));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acceptance_ratio_mat
+arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn);
+RcppExport SEXP _mstcar_acceptance_ratio_mat(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_mat(mod, file_suff, burn));
+    return rcpp_result_gen;
+END_RCPP
+}
 // progress
 void progress(int s, int n_iter, int n, int l);
 RcppExport SEXP _mstcar_progress(SEXP sSEXP, SEXP n_iterSEXP, SEXP nSEXP, SEXP lSEXP) {
@@ -203,34 +229,10 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// acceptance_ratio_cube
-arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn);
-RcppExport SEXP _mstcar_acceptance_ratio_cube(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_cube(mod, file_suff, burn));
-    return rcpp_result_gen;
-END_RCPP
-}
-// acceptance_ratio_mat
-arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn);
-RcppExport SEXP _mstcar_acceptance_ratio_mat(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_mat(mod, file_suff, burn));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_mstcar_acceptance_ratio_cube", (DL_FUNC) &_mstcar_acceptance_ratio_cube, 3},
+    {"_mstcar_acceptance_ratio_mat", (DL_FUNC) &_mstcar_acceptance_ratio_mat, 3},
     {"_mstcar_progress", (DL_FUNC) &_mstcar_progress, 4},
     {"_mstcar_cube2vec", (DL_FUNC) &_mstcar_cube2vec, 1},
     {"_mstcar_mat2vec", (DL_FUNC) &_mstcar_mat2vec, 1},
@@ -246,8 +248,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
     {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
     {"_mstcar_load_samples", (DL_FUNC) &_mstcar_load_samples, 5},
-    {"_mstcar_acceptance_ratio_cube", (DL_FUNC) &_mstcar_acceptance_ratio_cube, 3},
-    {"_mstcar_acceptance_ratio_mat", (DL_FUNC) &_mstcar_acceptance_ratio_mat, 3},
     {NULL, NULL, 0}
 };
 

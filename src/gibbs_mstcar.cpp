@@ -38,12 +38,10 @@ arma::mat vec2mat(arma::rowvec v, int Ng, int Nt) {
 	for (unsigned int i = 0; i < v.n_elem; i++) m[i] = v[i];
 	return m;
 }
-//[[Rcpp::export]]
 double logit(double x) {
 	double lx = log(x / (1 - x));
 	return lx;
 }
-//[[Rcpp::export]]
 double expit(double p) {
 	double ep = exp(p) / (1 + exp(p));
 	return ep;
@@ -372,6 +370,13 @@ void gibbs_sampler(List mod, int n_iter, int n_loop = 0, int l = 0) {
 	new_Gt   .save(get_outname(name, dir, "Gt"   , its + n_iter).get_cstring());
 	new_z    .save(get_outname(name, dir, "z"    , its + n_iter).get_cstring());
 	if (rho_up) new_rho.save(get_outname(name, dir, "rho", its + n_iter).get_cstring());
+	field<mat> output_test;
+	output_test.load(get_outname(name, dir, "tau2", its + n_iter).get_cstring());
+	for (int i = 0; i < 2; i++) {
+		if (size(output_test)[i] == 0) {
+			stop("Output saved improperly. Please try re-creating model and running again.");
+		}
+	}
 }
 //[[Rcpp::export]]
 arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff) {
