@@ -391,8 +391,9 @@ arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, 
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		file = get_outname(name, dir, param.get_cstring(), file_suff[it]);
-		Rcout << "Pulling files from: " << file.get_cstring() << "\n"; 
+		Rcout << "Pulling output from: " << file.get_cstring() << "\n"; 
 		output_full.load(file.get_cstring());
+		Rcout << "Imported a " << size(output_full) << " field for parameter " << param.get_cstring() << "\n";
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			if ((param == "theta") | (param == "z")) {
 				if (method == "binom") {
@@ -421,8 +422,9 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	int j = 0;
 	for (unsigned int it = 0; it < file_suff.n_elem; it++) {
 		file = get_outname(name, dir, param.get_cstring(), file_suff[it]);
-		Rcout << "Pulling files from: " << file.get_cstring() << "\n";
+		Rcout << "Pulling output from: " << file.get_cstring() << "\n";
 		output_full.load(file.get_cstring());
+		Rcout << "Imported a " << size(output_full) << " field for parameter " << param.get_cstring() << "\n";
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin) {
 			if (param == "beta") {
 				if (method == "binom") {
@@ -438,15 +440,19 @@ arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, ar
 	}
 	return output_thin;
 }
-//[[Rcpp::export(".load_samples")]]
-List load_samples(List mod, StringVector params, int burn, int thin, arma::vec file_suff) {
+//[[Rcpp::export]]
+List get_output(List mod, int burn, int thin, StringVector params, arma::vec file_suff) {
 	List samples;
 	for (int p = 0; p < params.length(); p++) {
 		String param = params[p];
 		if ((param == "theta") | (param == "Gt") | (param == "z")) {
-			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin, file_suff);			
+			Rcout << "About to run output_cube() function for parameter " << param.get_cstring() << "...\n";
+			samples[param.get_cstring()] = output_cube(mod, param.get_cstring(), burn, thin, file_suff);
+			Rcout << "Finished running output_cube() function for parameter " << param.get_cstring() << "!\n\n";			
 		} else {
-			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin, file_suff);			
+			Rcout << "About to run output_mat() function for parameter " << param.get_cstring() << "...\n";
+			samples[param.get_cstring()] = output_mat (mod, param.get_cstring(), burn, thin, file_suff);
+			Rcout << "Finished running output_mat() function for parameter " << param.get_cstring() << "!\n\n";		
 		} 
 	}
 	return samples;
@@ -460,7 +466,7 @@ arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn) {
 	int Ng      = dNd[0];
 	int Nt      = dNd[1];
 	int Ns      = dNd[2];
-	List sample = load_samples(mod, "theta", burn, 1, file_suff);
+	List sample = get_output(mod, burn, 1, "theta", file_suff);
 	field<cube> theta = sample["theta"];
 	return acpt_cube(theta, Ng, Nt, Ns);
 }
@@ -471,7 +477,7 @@ arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn) {
 	String dir  = params["dir"];
 	vec dNd     = params["dNd"];
 	int Ng      = dNd[0];
-	List sample = load_samples(mod, "rho", burn, 1, file_suff);
+	List sample = get_output(mod, burn, 1, "rho", file_suff);
 	field<mat> rho = sample["rho"];
 	return acpt_vec(rho, Ng);
 }

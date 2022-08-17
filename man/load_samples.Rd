@@ -4,17 +4,17 @@
 \alias{load_samples}
 \title{Load Samples From Storage}
 \usage{
-load_samples(mod, params = c("all", names(mod$inits)), thin = 1, burn = 0)
+load_samples(mod, burn = 0, thin = 1, params = c("all", names(mod$inits)))
 }
 \arguments{
 \item{mod}{a model object created with the \code{init()} function.}
 
-\item{params}{a string vector of parameters to load samples for. \code{all} specifies all parameters.}
+\item{burn}{amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.}
 
 \item{thin}{amount of thinning to be done on samples. Loads in every \code{thin} iteration of the samples.
 Must multiply evenly into 100.}
 
-\item{burn}{amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.}
+\item{params}{a string vector of parameters to load samples for. \code{all} specifies all parameters.}
 }
 \value{
 A list containing samples for each parameter of interest.

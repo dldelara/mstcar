@@ -49,8 +49,8 @@ output_mat <- function(mod, param, burn, thin, file_suff) {
     .Call('_mstcar_output_mat', PACKAGE = 'mstcar', mod, param, burn, thin, file_suff)
 }
 
-.load_samples <- function(mod, params, burn, thin, file_suff) {
-    .Call('_mstcar_load_samples', PACKAGE = 'mstcar', mod, params, burn, thin, file_suff)
+get_output <- function(mod, burn, thin, params, file_suff) {
+    .Call('_mstcar_get_output', PACKAGE = 'mstcar', mod, burn, thin, params, file_suff)
 }
 
 acceptance_ratio_cube <- function(mod, file_suff, burn) {

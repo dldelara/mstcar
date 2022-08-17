@@ -237,10 +237,10 @@ load_model = function(name, dir = getwd()) {
 #' Load Samples From Storage
 #'
 #' @param mod a model object created with the \code{init()} function.
-#' @param params a string vector of parameters to load samples for. \code{all} specifies all parameters.
+#' @param burn amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.
 #' @param thin amount of thinning to be done on samples. Loads in every \code{thin} iteration of the samples.
 #' Must multiply evenly into 100.
-#' @param burn amount of burn-in to be done on samples. Discards first \code{burn} iterations of the samples.
+#' @param params a string vector of parameters to load samples for. \code{all} specifies all parameters.
 #' @return A list containing samples for each parameter of interest.
 #' @examples
 #' \dontrun{
@@ -250,7 +250,7 @@ load_model = function(name, dir = getwd()) {
 #' load_samples(mod_nc, c("theta", "tau2", "Gt"), burn = 2e3)
 #' }
 #' @export
-load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn = 0) {
+load_samples = function(mod, burn = 0, thin = 1, params = c("all", names(mod$inits))) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
   if ("all" %in% params)  params = names(mod$inits)
@@ -264,9 +264,11 @@ load_samples = function(mod, params = c("all", names(mod$inits)), thin = 1, burn
   if (burn %% 100  != 0) {
     stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
   }
-
-  output = .load_samples(mod, params, burn, thin, getsuff(mod, params[1], burn))
+  cat("About to run get_output() function...\n\n")
+  output = get_output(mod, burn, thin, params, getsuff(mod, params[1], burn))
+  cat("Finished running get_output()!\n\n")
   output = lapply(output, simplify2array)
+  cat("Created output list with dimensions:\n", lapply(output, dim))
 
   if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]
   if ("rho"  %in% params) output$rho  = output$rho [1, , ]
