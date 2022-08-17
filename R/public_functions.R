@@ -268,7 +268,8 @@ load_samples = function(mod, burn = 0, thin = 1, params = c("all", names(mod$ini
   output = get_output(mod, burn, thin, params, getsuff(mod, params[1], burn))
   cat("Finished running get_output()!\n\n")
   output = lapply(output, simplify2array)
-  cat("Created output list with dimensions:\n", c(lapply(output, dim)))
+  cat("Created output list with dimensions:\n")
+  print(lapply(output, dim))
 
   if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]
   if ("rho"  %in% params) output$rho  = output$rho [1, , ]
