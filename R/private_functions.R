@@ -240,7 +240,7 @@ inicheck = function(mod, inits) {
   if (errct) stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
 }
 getsuff = function(mod, param, burn) {
-  dirname   = paste0(getwd(), "/", mod$params$name)
+  dirname   = paste0(mod$params$dir, "/", mod$params$name)
   expr      = paste0("^", mod$params$name, "_", param, "_[1-9]+[0-9]*\\.txt$")
   file_suff = list.files(paste0(dirname, "/", param))
   file_suff = sub(paste0("^", mod$params$name, "_.+_"), "", file_suff)

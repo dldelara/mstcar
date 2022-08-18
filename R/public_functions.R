@@ -264,12 +264,12 @@ load_samples = function(mod, burn = 0, thin = 1, params = c("all", names(mod$ini
   if (burn %% 100  != 0) {
     stop("'burn' must be a multiple of 100. Please choose another value for 'burn'")
   }
-  cat("About to run get_output() function...\n\n")
+  #cat("About to run get_output() function...\n\n")
   output = get_output(mod, burn, thin, params, getsuff(mod, params[1], burn))
-  cat("Finished running get_output()!\n\n")
+  #cat("Finished running get_output()!\n\n")
   output = lapply(output, simplify2array)
-  cat("Created output list with dimensions:\n")
-  print(lapply(output, dim))
+  #cat("Created output list with dimensions:\n")
+  #print(lapply(output, dim))
 
   if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]
   if ("rho"  %in% params) output$rho  = output$rho [1, , ]
