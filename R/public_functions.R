@@ -271,17 +271,17 @@ load_samples = function(mod, burn = 0, thin = 1, params = c("all", names(mod$ini
   #cat("Created output list with dimensions:\n")
   #print(lapply(output, dim))
 
-  if ("tau2" %in% params) output$tau2 = output$tau2[1, , ]
-  if ("rho"  %in% params) output$rho  = output$rho [1, , ]
+  if ("tau2" %in% params) output$tau2 = t(output$tau2[1, , ])
+  if ("rho"  %in% params) output$rho  = t(output$rho [1, , ])
   if (!is.null(dimnames(mod$data$Y))) {
     dims = c(dimnames(mod$data$Y), list(seq(burn + thin, mod$params$its, by = thin)))
     if ("theta" %in% params) dimnames(output$theta) = dims
     if ("beta"  %in% params) dimnames(output$beta ) = dims[-3]
-    if ("tau2"  %in% params) dimnames(output$tau2 ) = dims[c(1, 4)]
+    if ("tau2"  %in% params) dimnames(output$tau2 ) = dims[c(4, 1)]
     if ("Gt"    %in% params) dimnames(output$Gt   ) = dims[c(1, 1, 2, 4)]
     if ("G"     %in% params) dimnames(output$G    ) = dims[c(1, 1, 4)]
     if ("z"     %in% params) dimnames(output$z    ) = dims
-    if ("rho"   %in% params) dimnames(output$rho  ) = dims[c(1, 4)]
+    if ("rho"   %in% params) dimnames(output$rho  ) = dims[c(4, 1)]
   }
   output
 }
@@ -325,7 +325,9 @@ acceptance_ratio = function(mod, params = c("all", "theta", "rho"), burn = 0) {
 get_medians = function(rec_samples, params = c("all", names(rec_samples)), ci = 0.95) {
   params = match.arg(params, several.ok = TRUE)
   params = unique(params)
-  if ("all" %in% params) params = names(rec_samples)
+  if ("all"  %in% params) params = names(rec_samples)
+  if ("tau2" %in% params) rec_samples$tau2 = t(rec_samples$tau2)
+  if ("rho"  %in% params) rec_samples$rho  = t(rec_samples$rho )
   est = NULL
   for (nam in params) {
     d = 1:(length(dim(rec_samples[[nam]])) - 1)
