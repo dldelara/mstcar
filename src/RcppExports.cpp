@@ -11,6 +11,220 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// acpt_cube
+arma::cube acpt_cube(arma::field<arma::cube> f, int Ng, int Nt, int Ns);
+RcppExport SEXP _mstcar_acpt_cube(SEXP fSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::field<arma::cube> >::type f(fSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    rcpp_result_gen = Rcpp::wrap(acpt_cube(f, Ng, Nt, Ns));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acpt_vec
+arma::rowvec acpt_vec(arma::field<arma::mat> f, int Ng);
+RcppExport SEXP _mstcar_acpt_vec(SEXP fSEXP, SEXP NgSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::field<arma::mat> >::type f(fSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    rcpp_result_gen = Rcpp::wrap(acpt_vec(f, Ng));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acceptance_ratio_cube
+arma::cube acceptance_ratio_cube(Rcpp::List mod, arma::vec file_suff, int burn);
+RcppExport SEXP _mstcar_acceptance_ratio_cube(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_cube(mod, file_suff, burn));
+    return rcpp_result_gen;
+END_RCPP
+}
+// acceptance_ratio_mat
+arma::rowvec acceptance_ratio_mat(Rcpp::List mod, arma::vec file_suff, int burn);
+RcppExport SEXP _mstcar_acceptance_ratio_mat(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_mat(mod, file_suff, burn));
+    return rcpp_result_gen;
+END_RCPP
+}
+// adaptive_variance_theta
+void adaptive_variance_theta(arma::cube& gamma, arma::field<arma::cube> new_theta, int s, int Ng, int Nt, int Ns);
+RcppExport SEXP _mstcar_adaptive_variance_theta(SEXP gammaSEXP, SEXP new_thetaSEXP, SEXP sSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::cube> >::type new_theta(new_thetaSEXP);
+    Rcpp::traits::input_parameter< int >::type s(sSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    adaptive_variance_theta(gamma, new_theta, s, Ng, Nt, Ns);
+    return R_NilValue;
+END_RCPP
+}
+// adaptive_variance_rho
+void adaptive_variance_rho(arma::rowvec& delta, arma::field<arma::mat> new_rho, int s, int Ng);
+RcppExport SEXP _mstcar_adaptive_variance_rho(SEXP deltaSEXP, SEXP new_rhoSEXP, SEXP sSEXP, SEXP NgSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec& >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::mat> >::type new_rho(new_rhoSEXP);
+    Rcpp::traits::input_parameter< int >::type s(sSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    adaptive_variance_rho(delta, new_rho, s, Ng);
+    return R_NilValue;
+END_RCPP
+}
+// update_theta
+void update_theta(arma::cube& theta, arma::cube Y, arma::cube n, arma::rowvec tau2, arma::mat beta, arma::cube z, arma::cube gamma, int Ng, int Nt, int Ns, Rcpp::String method);
+RcppExport SEXP _mstcar_update_theta(SEXP thetaSEXP, SEXP YSEXP, SEXP nSEXP, SEXP tau2SEXP, SEXP betaSEXP, SEXP zSEXP, SEXP gammaSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP, SEXP methodSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type n(nSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type tau2(tau2SEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type gamma(gammaSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::String >::type method(methodSEXP);
+    update_theta(theta, Y, n, tau2, beta, z, gamma, Ng, Nt, Ns, method);
+    return R_NilValue;
+END_RCPP
+}
+// update_beta
+void update_beta(arma::mat& beta, arma::cube theta, arma::rowvec tau2, arma::cube z, arma::mat Sig_b_i, arma::vec eta, int Ng, int Nt, int Ns);
+RcppExport SEXP _mstcar_update_beta(SEXP betaSEXP, SEXP thetaSEXP, SEXP tau2SEXP, SEXP zSEXP, SEXP Sig_b_iSEXP, SEXP etaSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type tau2(tau2SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sig_b_i(Sig_b_iSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type eta(etaSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    update_beta(beta, theta, tau2, z, Sig_b_i, eta, Ng, Nt, Ns);
+    return R_NilValue;
+END_RCPP
+}
+// update_tau2
+void update_tau2(arma::rowvec& tau2, arma::cube theta, arma::mat beta, arma::cube z, double at, double bt, int Ng, int Nt, int Ns);
+RcppExport SEXP _mstcar_update_tau2(SEXP tau2SEXP, SEXP thetaSEXP, SEXP betaSEXP, SEXP zSEXP, SEXP atSEXP, SEXP btSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec& >::type tau2(tau2SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type z(zSEXP);
+    Rcpp::traits::input_parameter< double >::type at(atSEXP);
+    Rcpp::traits::input_parameter< double >::type bt(btSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    update_tau2(tau2, theta, beta, z, at, bt, Ng, Nt, Ns);
+    return R_NilValue;
+END_RCPP
+}
+// update_Gt_i
+void update_Gt_i(arma::cube& Gt_i, arma::cube z, arma::rowvec rho, arma::mat G, double nu, double bt, int Ng, int Nt, int Ns, int I, arma::field<arma::uvec> neigh, arma::vec num);
+RcppExport SEXP _mstcar_update_Gt_i(SEXP Gt_iSEXP, SEXP zSEXP, SEXP rhoSEXP, SEXP GSEXP, SEXP nuSEXP, SEXP btSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP, SEXP ISEXP, SEXP neighSEXP, SEXP numSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type Gt_i(Gt_iSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< double >::type bt(btSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    Rcpp::traits::input_parameter< int >::type I(ISEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::uvec> >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type num(numSEXP);
+    update_Gt_i(Gt_i, z, rho, G, nu, bt, Ng, Nt, Ns, I, neigh, num);
+    return R_NilValue;
+END_RCPP
+}
+// update_G
+void update_G(arma::mat& G, arma::cube Gt_i, double nu, double nu_0, arma::mat G0_i, int Ng, int Nt);
+RcppExport SEXP _mstcar_update_G(SEXP GSEXP, SEXP Gt_iSEXP, SEXP nuSEXP, SEXP nu_0SEXP, SEXP G0_iSEXP, SEXP NgSEXP, SEXP NtSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type Gt_i(Gt_iSEXP);
+    Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
+    Rcpp::traits::input_parameter< double >::type nu_0(nu_0SEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type G0_i(G0_iSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    update_G(G, Gt_i, nu, nu_0, G0_i, Ng, Nt);
+    return R_NilValue;
+END_RCPP
+}
+// update_z
+void update_z(arma::cube& z, arma::cube Gt_i, arma::rowvec rho, arma::rowvec tau2, arma::cube theta, arma::mat beta, int Ng, int Nt, int Ns, arma::field<arma::uvec> neigh, arma::vec num);
+RcppExport SEXP _mstcar_update_z(SEXP zSEXP, SEXP Gt_iSEXP, SEXP rhoSEXP, SEXP tau2SEXP, SEXP thetaSEXP, SEXP betaSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP, SEXP neighSEXP, SEXP numSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::cube& >::type z(zSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type Gt_i(Gt_iSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type tau2(tau2SEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::uvec> >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type num(numSEXP);
+    update_z(z, Gt_i, rho, tau2, theta, beta, Ng, Nt, Ns, neigh, num);
+    return R_NilValue;
+END_RCPP
+}
+// update_rho
+void update_rho(arma::rowvec& rho, arma::cube Gt_i, arma::cube z, double a_rho, double b_rho, arma::rowvec delta, int Ng, int Nt, int Ns, int I, arma::field<arma::uvec> neigh, arma::vec num);
+RcppExport SEXP _mstcar_update_rho(SEXP rhoSEXP, SEXP Gt_iSEXP, SEXP zSEXP, SEXP a_rhoSEXP, SEXP b_rhoSEXP, SEXP deltaSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP, SEXP ISEXP, SEXP neighSEXP, SEXP numSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::rowvec& >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type Gt_i(Gt_iSEXP);
+    Rcpp::traits::input_parameter< arma::cube >::type z(zSEXP);
+    Rcpp::traits::input_parameter< double >::type a_rho(a_rhoSEXP);
+    Rcpp::traits::input_parameter< double >::type b_rho(b_rhoSEXP);
+    Rcpp::traits::input_parameter< arma::rowvec >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
+    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
+    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
+    Rcpp::traits::input_parameter< int >::type I(ISEXP);
+    Rcpp::traits::input_parameter< arma::field<arma::uvec> >::type neigh(neighSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type num(numSEXP);
+    update_rho(rho, Gt_i, z, a_rho, b_rho, delta, Ng, Nt, Ns, I, neigh, num);
+    return R_NilValue;
+END_RCPP
+}
 // progress
 void progress(int s, int n_iter, int n, int l);
 RcppExport SEXP _mstcar_progress(SEXP sSEXP, SEXP n_iterSEXP, SEXP nSEXP, SEXP lSEXP) {
@@ -22,6 +236,78 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type l(lSEXP);
     progress(s, n_iter, n, l);
     return R_NilValue;
+END_RCPP
+}
+// gibbs_sampler
+void gibbs_sampler(List& mod, int n_iter, int n_loop, int l);
+RcppExport SEXP _mstcar_gibbs_sampler(SEXP modSEXP, SEXP n_iterSEXP, SEXP n_loopSEXP, SEXP lSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List& >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
+    Rcpp::traits::input_parameter< int >::type n_loop(n_loopSEXP);
+    Rcpp::traits::input_parameter< int >::type l(lSEXP);
+    gibbs_sampler(mod, n_iter, n_loop, l);
+    return R_NilValue;
+END_RCPP
+}
+// get_outname
+Rcpp::String get_outname(Rcpp::String name, Rcpp::String dir, Rcpp::String param, int iter);
+RcppExport SEXP _mstcar_get_outname(SEXP nameSEXP, SEXP dirSEXP, SEXP paramSEXP, SEXP iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::String >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Rcpp::String >::type dir(dirSEXP);
+    Rcpp::traits::input_parameter< Rcpp::String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type iter(iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_outname(name, dir, param, iter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// output_cube
+arma::field<arma::cube> output_cube(Rcpp::List mod, Rcpp::String param, int burn, int thin, arma::vec file_suff);
+RcppExport SEXP _mstcar_output_cube(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< Rcpp::String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(output_cube(mod, param, burn, thin, file_suff));
+    return rcpp_result_gen;
+END_RCPP
+}
+// output_mat
+arma::field<arma::mat> output_mat(Rcpp::List mod, Rcpp::String param, int burn, int thin, arma::vec file_suff);
+RcppExport SEXP _mstcar_output_mat(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< Rcpp::String >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(output_mat(mod, param, burn, thin, file_suff));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_output
+Rcpp::List get_output(Rcpp::List mod, int burn, int thin, Rcpp::StringVector params, arma::vec file_suff);
+RcppExport SEXP _mstcar_get_output(SEXP modSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP paramsSEXP, SEXP file_suffSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type mod(modSEXP);
+    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    Rcpp::traits::input_parameter< Rcpp::StringVector >::type params(paramsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_output(mod, burn, thin, params, file_suff));
+    return rcpp_result_gen;
 END_RCPP
 }
 // cube2vec
@@ -72,46 +358,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// acpt_cube
-arma::cube acpt_cube(arma::field<arma::cube> f, int Ng, int Nt, int Ns);
-RcppExport SEXP _mstcar_acpt_cube(SEXP fSEXP, SEXP NgSEXP, SEXP NtSEXP, SEXP NsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::field<arma::cube> >::type f(fSEXP);
-    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
-    Rcpp::traits::input_parameter< int >::type Nt(NtSEXP);
-    Rcpp::traits::input_parameter< int >::type Ns(NsSEXP);
-    rcpp_result_gen = Rcpp::wrap(acpt_cube(f, Ng, Nt, Ns));
-    return rcpp_result_gen;
-END_RCPP
-}
-// acpt_vec
-arma::rowvec acpt_vec(arma::field<arma::mat> f, int Ng);
-RcppExport SEXP _mstcar_acpt_vec(SEXP fSEXP, SEXP NgSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::field<arma::mat> >::type f(fSEXP);
-    Rcpp::traits::input_parameter< int >::type Ng(NgSEXP);
-    rcpp_result_gen = Rcpp::wrap(acpt_vec(f, Ng));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_outname
-String get_outname(String name, String dir, String param, int iter);
-RcppExport SEXP _mstcar_get_outname(SEXP nameSEXP, SEXP dirSEXP, SEXP paramSEXP, SEXP iterSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< String >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< String >::type dir(dirSEXP);
-    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
-    Rcpp::traits::input_parameter< int >::type iter(iterSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_outname(name, dir, param, iter));
-    return rcpp_result_gen;
-END_RCPP
-}
 // sym_test
 arma::mat sym_test(arma::mat A);
 RcppExport SEXP _mstcar_sym_test(SEXP ASEXP) {
@@ -123,107 +369,32 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// gibbs_sampler
-void gibbs_sampler(List mod, int n_iter, int n_loop, int l);
-RcppExport SEXP _mstcar_gibbs_sampler(SEXP modSEXP, SEXP n_iterSEXP, SEXP n_loopSEXP, SEXP lSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< int >::type n_iter(n_iterSEXP);
-    Rcpp::traits::input_parameter< int >::type n_loop(n_loopSEXP);
-    Rcpp::traits::input_parameter< int >::type l(lSEXP);
-    gibbs_sampler(mod, n_iter, n_loop, l);
-    return R_NilValue;
-END_RCPP
-}
-// output_cube
-arma::field<arma::cube> output_cube(List mod, String param, int burn, int thin, arma::vec file_suff);
-RcppExport SEXP _mstcar_output_cube(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(output_cube(mod, param, burn, thin, file_suff));
-    return rcpp_result_gen;
-END_RCPP
-}
-// output_mat
-arma::field<arma::mat> output_mat(List mod, String param, int burn, int thin, arma::vec file_suff);
-RcppExport SEXP _mstcar_output_mat(SEXP modSEXP, SEXP paramSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP file_suffSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< String >::type param(paramSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(output_mat(mod, param, burn, thin, file_suff));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_output
-List get_output(List mod, int burn, int thin, StringVector params, arma::vec file_suff);
-RcppExport SEXP _mstcar_get_output(SEXP modSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP paramsSEXP, SEXP file_suffSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
-    Rcpp::traits::input_parameter< StringVector >::type params(paramsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_output(mod, burn, thin, params, file_suff));
-    return rcpp_result_gen;
-END_RCPP
-}
-// acceptance_ratio_cube
-arma::cube acceptance_ratio_cube(List mod, arma::vec file_suff, int burn);
-RcppExport SEXP _mstcar_acceptance_ratio_cube(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_cube(mod, file_suff, burn));
-    return rcpp_result_gen;
-END_RCPP
-}
-// acceptance_ratio_mat
-arma::rowvec acceptance_ratio_mat(List mod, arma::vec file_suff, int burn);
-RcppExport SEXP _mstcar_acceptance_ratio_mat(SEXP modSEXP, SEXP file_suffSEXP, SEXP burnSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mod(modSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type file_suff(file_suffSEXP);
-    Rcpp::traits::input_parameter< int >::type burn(burnSEXP);
-    rcpp_result_gen = Rcpp::wrap(acceptance_ratio_mat(mod, file_suff, burn));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_mstcar_acpt_cube", (DL_FUNC) &_mstcar_acpt_cube, 4},
+    {"_mstcar_acpt_vec", (DL_FUNC) &_mstcar_acpt_vec, 2},
+    {"_mstcar_acceptance_ratio_cube", (DL_FUNC) &_mstcar_acceptance_ratio_cube, 3},
+    {"_mstcar_acceptance_ratio_mat", (DL_FUNC) &_mstcar_acceptance_ratio_mat, 3},
+    {"_mstcar_adaptive_variance_theta", (DL_FUNC) &_mstcar_adaptive_variance_theta, 6},
+    {"_mstcar_adaptive_variance_rho", (DL_FUNC) &_mstcar_adaptive_variance_rho, 4},
+    {"_mstcar_update_theta", (DL_FUNC) &_mstcar_update_theta, 11},
+    {"_mstcar_update_beta", (DL_FUNC) &_mstcar_update_beta, 9},
+    {"_mstcar_update_tau2", (DL_FUNC) &_mstcar_update_tau2, 9},
+    {"_mstcar_update_Gt_i", (DL_FUNC) &_mstcar_update_Gt_i, 12},
+    {"_mstcar_update_G", (DL_FUNC) &_mstcar_update_G, 7},
+    {"_mstcar_update_z", (DL_FUNC) &_mstcar_update_z, 11},
+    {"_mstcar_update_rho", (DL_FUNC) &_mstcar_update_rho, 12},
     {"_mstcar_progress", (DL_FUNC) &_mstcar_progress, 4},
+    {"_mstcar_gibbs_sampler", (DL_FUNC) &_mstcar_gibbs_sampler, 4},
+    {"_mstcar_get_outname", (DL_FUNC) &_mstcar_get_outname, 4},
+    {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
+    {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
+    {"_mstcar_get_output", (DL_FUNC) &_mstcar_get_output, 5},
     {"_mstcar_cube2vec", (DL_FUNC) &_mstcar_cube2vec, 1},
     {"_mstcar_mat2vec", (DL_FUNC) &_mstcar_mat2vec, 1},
     {"_mstcar_vec2mat", (DL_FUNC) &_mstcar_vec2mat, 3},
     {"_mstcar_Sig_eta_i", (DL_FUNC) &_mstcar_Sig_eta_i, 3},
-    {"_mstcar_acpt_cube", (DL_FUNC) &_mstcar_acpt_cube, 4},
-    {"_mstcar_acpt_vec", (DL_FUNC) &_mstcar_acpt_vec, 2},
-    {"_mstcar_get_outname", (DL_FUNC) &_mstcar_get_outname, 4},
     {"_mstcar_sym_test", (DL_FUNC) &_mstcar_sym_test, 1},
-    {"_mstcar_gibbs_sampler", (DL_FUNC) &_mstcar_gibbs_sampler, 4},
-    {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
-    {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
-    {"_mstcar_get_output", (DL_FUNC) &_mstcar_get_output, 5},
-    {"_mstcar_acceptance_ratio_cube", (DL_FUNC) &_mstcar_acceptance_ratio_cube, 3},
-    {"_mstcar_acceptance_ratio_mat", (DL_FUNC) &_mstcar_acceptance_ratio_mat, 3},
     {NULL, NULL, 0}
 };
 
