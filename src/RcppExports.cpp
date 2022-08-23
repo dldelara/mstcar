@@ -310,17 +310,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cube2vec
-arma::vec cube2vec(arma::cube c);
-RcppExport SEXP _mstcar_cube2vec(SEXP cSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::cube >::type c(cSEXP);
-    rcpp_result_gen = Rcpp::wrap(cube2vec(c));
-    return rcpp_result_gen;
-END_RCPP
-}
 // mat2vec
 arma::vec mat2vec(arma::mat m);
 RcppExport SEXP _mstcar_mat2vec(SEXP mSEXP) {
@@ -359,14 +348,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // sym_test
-arma::mat sym_test(arma::mat A);
+void sym_test(arma::mat& A);
 RcppExport SEXP _mstcar_sym_test(SEXP ASEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(sym_test(A));
-    return rcpp_result_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type A(ASEXP);
+    sym_test(A);
+    return R_NilValue;
 END_RCPP
 }
 
@@ -390,7 +378,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_output_cube", (DL_FUNC) &_mstcar_output_cube, 5},
     {"_mstcar_output_mat", (DL_FUNC) &_mstcar_output_mat, 5},
     {"_mstcar_get_output", (DL_FUNC) &_mstcar_get_output, 5},
-    {"_mstcar_cube2vec", (DL_FUNC) &_mstcar_cube2vec, 1},
     {"_mstcar_mat2vec", (DL_FUNC) &_mstcar_mat2vec, 1},
     {"_mstcar_vec2mat", (DL_FUNC) &_mstcar_vec2mat, 3},
     {"_mstcar_Sig_eta_i", (DL_FUNC) &_mstcar_Sig_eta_i, 3},

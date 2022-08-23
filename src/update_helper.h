@@ -10,6 +10,6 @@ double logit(double x);
 double expit(double p);
 arma::mat Sig_eta_i(arma::cube Gt_i, arma::rowvec rho, int Nt);
 Rcpp::String get_outname(Rcpp::String name, Rcpp::String dir, Rcpp::String param, int iter);
-arma::mat sym_test(arma::mat A);
+void sym_test(arma::mat& A);
 
 #endif

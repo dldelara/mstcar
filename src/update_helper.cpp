@@ -2,13 +2,6 @@
 using namespace Rcpp;
 using namespace arma;
 
-//use templates on these two functions
-//[[Rcpp::export]]
-arma::vec cube2vec(arma::cube c) {
-	vec v(c.n_elem, fill::zeros);
-	for (unsigned int i = 0; i < c.n_elem; i++) v[i] = c[i];
-	return v;
-}
 //[[Rcpp::export]]
 arma::vec mat2vec(arma::mat m) {
 	vec v(m.n_elem, fill::zeros);
@@ -55,15 +48,15 @@ arma::mat Sig_eta_i(arma::cube Gt_i, arma::rowvec rho, int Nt) {
 	return Sei;
 }
 //[[Rcpp::export]]
-arma::mat sym_test(arma::mat A) {
+void sym_test(arma::mat& A) {
 	int p = A.n_rows;
 	for (int i = 0; i < (p - 1); i++) {
 		for (int j = i + 1; j < p; j++) {
-			if (abs(A(i, j) - A(j, i)) / A(i, j) > 1e-5) {
+			if (A(i, j) == A(j, i)) continue;
+			else if (abs(A(i, j) - A(j, i)) / A(i, j) > 1e-5) {
 				Rcout << A << "\n" << abs(A(i, j) - A(j, i)) / A(i, j) * 100 << "\n";
 				stop("Sad :(");
-			} 
+			} else A(i, j) = A(j, i);
 		}
 	}
-	return (A + A.t()) / 2;
 }

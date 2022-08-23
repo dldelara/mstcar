@@ -35,7 +35,7 @@ arma::field<arma::cube> output_cube(Rcpp::List mod, Rcpp::String param, int burn
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin, j++) {
 			if ((param == "theta") | (param == "z")) {
 				if (method == "binom") output_thin[j] = exp(output_full[i]) / (1 + exp(output_full[i]));
-				if (method == "pois")  output_thin[j] = exp(output_full[i]);
+				if (method == "pois" ) output_thin[j] = exp(output_full[i]);
 			} else output_thin[j] = output_full[i];
 		}
 	}
@@ -56,7 +56,7 @@ arma::field<arma::mat> output_mat(Rcpp::List mod, Rcpp::String param, int burn, 
 		for (unsigned int i = thin - 1; i < output_full.n_elem; i += thin, j++) {
 			if (param == "beta") {
 				if (method == "binom") output_thin[j] = exp(output_full[i]) / (1 + exp(output_full[i]));
-				if (method == "pois")  output_thin[j] = exp(output_full[i]);
+				if (method == "pois" ) output_thin[j] = exp(output_full[i]);
 			} else output_thin[j] = output_full[i];
 		}
 	}

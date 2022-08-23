@@ -1,3 +1,5 @@
+//[[Rcpp::plugins(openmp)]]
+#include <omp.h>
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include "update_helper.h"
@@ -11,6 +13,8 @@ void update_theta(arma::cube& theta,
 	arma::cube gamma,                                // hyperparameters
 	int Ng, int Nt, int Ns, Rcpp::String method      // metaparameters
 ) {
+	omp_set_num_threads(16);
+	#pragma omp parallel for
 	for (int i = 0; i < Ng * Nt * Ns; i++) {
 		double theta_star = R::rnorm(theta[i], gamma[i]);
 		double r_t = Y[i] * (theta_star - theta[i]);
@@ -40,6 +44,8 @@ void update_tau2(arma::rowvec& tau2,
 	int Ng, int Nt, int Ns                          // metaparameters
 ) {
 	double at_star = (Ns * Nt) / 2 + at;
+	omp_set_num_threads(8);
+	#pragma omp parallel for
 	for (int g = 0; g < Ng; g++) {
 		double tbz = 0;
 		for (int i = 0; i < Nt * Ns; i++) tbz += pow(theta.row(g)[i] - beta.row(g)[i % Nt] - z.row(g)[i], 2);
@@ -76,7 +82,7 @@ void update_Gt_i(arma::cube& Gt_i,
   }
   for (int t = 0; t < Nt; t++) {
   	Psi_star.slice(t) += G;
-  	if (!(Psi_star.slice(t).is_symmetric())) Psi_star.slice(t) = sym_test(Psi_star.slice(t));
+  	if (!(Psi_star.slice(t).is_symmetric())) sym_test(Psi_star.slice(t));
   	Gt_i.slice(t) = inv(riwish(nu_Gt_star, Psi_star.slice(t)));
   }
 }
@@ -102,9 +108,9 @@ void update_z(arma::cube& z,
 	Taukt_mat.diag() = repmat(1 / tau2, 1, Nt);
 	for (int i = 0; i < Ns; i++) {
 		mat Sig_z_star = Taukt_mat + num[i] * Sei;
-		if (!(Sig_z_star.is_symmetric())) Sig_z_star = sym_test(Sig_z_star);
+		if (!(Sig_z_star.is_symmetric())) sym_test(Sig_z_star);
 		Sig_z_star     = inv(Sig_z_star);
-		vec sum_zj     = cube2vec(sum(z.slices(neigh[i]), 2));
+		vec sum_zj     = mat2vec((mat)sum(z.slices(neigh[i]), 2));
 		vec phi_star   = Sig_z_star * (Taukt_mat * mat2vec(theta.slice(i) - beta) + Sei * sum_zj);
 		z.slice(i) = vec2mat(rmvnorm(1, phi_star, Sig_z_star), Ng, Nt);
 	}
@@ -121,6 +127,8 @@ void update_rho(arma::rowvec& rho,
 	int Ng, int Nt, int Ns, int I,                   // metaparameters
 	arma::field<arma::uvec> neigh, arma::vec num     // adjacency
 ) {
+	omp_set_num_threads(8);
+	#pragma omp parallel for
 	for (int k = 0; k < Ng; k++) {
 	  rowvec rho_star = rho;
 	  rho_star[k]     = expit(R::rnorm(logit(rho[k]), delta[k]));

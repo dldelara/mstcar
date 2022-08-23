@@ -77,10 +77,6 @@ get_output <- function(mod, burn, thin, params, file_suff) {
     .Call('_mstcar_get_output', PACKAGE = 'mstcar', mod, burn, thin, params, file_suff)
 }
 
-cube2vec <- function(c) {
-    .Call('_mstcar_cube2vec', PACKAGE = 'mstcar', c)
-}
-
 mat2vec <- function(m) {
     .Call('_mstcar_mat2vec', PACKAGE = 'mstcar', m)
 }
@@ -94,6 +90,6 @@ Sig_eta_i <- function(Gt_i, rho, Nt) {
 }
 
 sym_test <- function(A) {
-    .Call('_mstcar_sym_test', PACKAGE = 'mstcar', A)
+    invisible(.Call('_mstcar_sym_test', PACKAGE = 'mstcar', A))
 }
 
