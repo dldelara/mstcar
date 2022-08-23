@@ -21,7 +21,7 @@ mstcar comes with three datasets: `ncheart`, `ncnb`, and `ncshp`. Each of these 
 
 -   Discrete event counts for a parameter of interest, stratified by group, time period, and region, along with its corresponding population counts. This data may be Poisson- or Binomial-distributed. The example data is Binomial-distributed Mycardial Infarction deaths in four age groups from 1979-1988 in North Carolina. Reference `ncheart` to see how this data looks or `help(ncheart)` for more information on the dataset. For more information on preparing your event data, read `vignette("mstcar-event")`.
 
--   Some mechanism to tell mstcar about the adjacency structure of the data. This is, in essence, which regions are neighbors with each other. mstcar will accept two types of input: a list with the adjacency structure or a shapefile. Shapefiles will only work if every region has at least 1 neighbor. Reference `ncnb` for an example adjacency structure list or `ncshp` for an example shapefile. For more information on preparing your adjacency data, read `vignette("mstcar-adj")`.
+-   Some mechanism to tell mstcar about the adjacency structure of the data. This is, in essence, which regions are neighbors with each other. mstcar will accept two types of input: a `list` with the adjacency structure or a shapefile. Shapefiles will only work if every region has at least 1 neighbor. Reference `ncnb` for an example adjacency structure list or `ncshp` for an example shapefile. For more information on preparing your adjacency data, read `vignette("mstcar-adj")`.
 
 Some quick notes about data setup:
 
@@ -107,27 +107,33 @@ If you want to learn more about the `load_samples()` function, read `vignette("m
 With our output loaded and readable by R, we can finally get our estimates. We simply put our `output` object into the `get_medians()` function:
 
 ``` r
-estimates = get_medians(output)
+estimates = get_medians(output, ci = 0.95)
 ```
 
-This creates a list object with median estimates for all of our parameters of interest. In the future, this will also give the option to specify a credible interval for the estimates to test for reliability. The star of the show here is the `theta` parameter, as it represents our spatially smoothed rates:
+This creates a `list` object with median estimates for all of our parameters of interest along with the option to specify a credible interval for the estimates to test for reliability. The star of the show here is the `theta` parameter, as it represents our spatially smoothed rates:
 
 ``` r
 estimates$theta
 ```
 
+The `estimates` object shows the medians and the credible interval along the rows. We can add a `[1, , , ]` in front of the `estimates$theta` object to show only the median estimates:
+
+``` r
+estimates$theta[1, , , ]
+```
+
 For this type of mortality data, it is common to observe the rates out of 100,000, so when observing your estimates, it may be worthy to also multiply the rates by 100,000:
 
 ``` r
-estimates$theta * 1e5
+estimates$theta[1, , , ] * 1e5
 ```
 
 You can also inspect rates by age group, year, or region:
 
 ``` r
-estimates$theta[               , "1981", "37119"] # explore between age groups
-estimates$theta["55-64.all.all",       , "37119"] # explore between time periods
-estimates$theta["55-64.all.all", "1981",        ] # explore between counties
+estimates$theta[1,                , "1981", "37119"] * 1e5 # explore between age groups
+estimates$theta[1, "55-64.all.all",       , "37119"] * 1e5 # explore between time periods
+estimates$theta[1, "55-64.all.all", "1981",        ] * 1e5 # explore between counties
 ```
 
 For more information about the median estimates, read `vignette("mstcar-medians")`.
@@ -138,17 +144,18 @@ With our estimates finally in a form we can understand, we can use them to get a
 
 ``` r
 # Original Myocardial Infarction Death Rates in NC, Ages 55-64, 1979
-# Original Myocardial Infarction Death Rates in NC, Ages 55-64, 1979
+raw_55_79 = (ncheart$Y / ncheart$n)[1, 1, ] * 1e5
 ggplot() +
-  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = (ncheart$Y / ncheart$n)[1, 1, ] * 1e5)) +
+  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = raw_55_79)) +
   labs(
     title = "Raw Myocardial Infarction Death Rates in NC, Ages 55-64, 1979",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_stepsn(colors = c("darkgreen", "yellow", "darkred"), breaks = seq(1200, 1800, length = 4))
 # Spatially Smoothed MI Death Rates in NC
+est_55_79 = estimates$theta[1, 1, 1, ] * 1e5
 ggplot() +
-  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = expit(medians$theta)[1, 1, ] * 1e5)) +
+  geom_sf(ncshp, mapping = aes(geometry = geometry, fill = est_55_79)) +
   labs(
     title = "Smoothed Myocardial Infarction Death Rates in NC, Ages 55-64, 1979",
     fill = "Deaths per 100,000"
