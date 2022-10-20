@@ -89,7 +89,7 @@ Sig_eta_i <- function(Gt_i, rho, Nt) {
     .Call('_mstcar_Sig_eta_i', PACKAGE = 'mstcar', Gt_i, rho, Nt)
 }
 
-sym_test <- function(A) {
-    invisible(.Call('_mstcar_sym_test', PACKAGE = 'mstcar', A))
+sym_test <- function(A, param) {
+    invisible(.Call('_mstcar_sym_test', PACKAGE = 'mstcar', A, param))
 }
 

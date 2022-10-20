@@ -12,7 +12,7 @@
 #' @export
 load_model = function(name, dir = getwd()) {
   mod = readRDS(paste0(dir, "/", name, "/mod_", name, ".Rds"))
-  mod$params$dir = gsub('(/)\\1+', '\\1', dir)
+  mod$params$dir = path.expand(gsub('(/)\\1+', '\\1', dir))
   mod
 }
 #' Load Samples From Storage

@@ -17,10 +17,10 @@ LinkingTo:
 	RcppArmadillo, 
 	RcppDist
 Suggests:
-    knitr,
-    rmarkdown,
-    ggplot2,
-    testthat (>= 3.0.0)
+  knitr,
+  rmarkdown,
+  ggplot2,
+  testthat (>= 3.0.0)
 Depends:
 	R (>= 2.10)
 LazyData: true
