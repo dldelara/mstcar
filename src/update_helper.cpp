@@ -1,4 +1,5 @@
 #include <RcppArmadillo.h>
+#include "save_load.h"
 using namespace Rcpp;
 using namespace arma;
 
@@ -54,7 +55,7 @@ void sym_test(arma::mat& A, Rcpp::String param) {
 		for (int j = i + 1; j < p; j++) {
 			if (A(i, j) == A(j, i)) continue;
 			else if (abs(A(i, j) - A(j, i)) / A(i, j) > 1e-5) {
-				Rcout << A << "\nRatio of A[i, j] to A[j, i]: " << abs(A(i, j) - A(j, i)) / A(i, j) * 100 << "\n";
+				Rcout << A << "\nRatio of A[i, j] to A[j, i]: " << abs(A(i, j) - A(j, i)) / A(i, j) * 100 << "; found in parameter update " << param.get_cstring() << "\n";
 				stop("Non-symmetric matrix. See above for the matrix in question, along with the ratio of A[i, j] to A[j, i] that caused the error.");
 			} else A(i, j) = A(j, i);
 		}
