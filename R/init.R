@@ -130,11 +130,13 @@ init = function(
   if (is.null(mod$inits$theta)) {
     if (method == "binom") mod$inits$theta = logit(ifelse((data$Y == 0) | (data$n == 0) | (data$Y >= data$n), sum(data$Y) / sum(data$n), data$Y / data$n))
     if (method == "pois" ) mod$inits$theta =   log(ifelse(data$Y == 0, sum(data$Y) / sum(data$n), data$Y / data$n))
+    mod$inits$theta = ifelse(is.finite(mod$inits$theta), mod$inits$theta, min(mod$inits$theta[is.finite(mod$inits$theta)]))
     initmiss = c(initmiss, "theta")
   }
   if (is.null(mod$inits$beta)) {
     if (method == "binom") mod$inits$beta = logit(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
     if (method == "pois" ) mod$inits$beta =   log(apply(data$Y, 1:2, sum) / apply(data$n, 1:2, sum))
+    mod$inits$beta = ifelse(is.finite(mod$inits$beta), mod$inits$beta, min(mod$inits$beta[is.finite(mod$inits$beta)]))
     initmiss = c(initmiss, "beta")
   }
   if (is.null(mod$inits$tau2)) {
