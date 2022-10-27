@@ -82,7 +82,9 @@ void update_Gt_i(arma::cube& Gt_i,
   }
   for (int t = 0; t < Nt; t++) {
   	Psi_star.slice(t) += G;
-  	if (!(Psi_star.slice(t).is_symmetric())) sym_test(Psi_star.slice(t), "Gt_i");
+  	String slicenum = "Gt_i";
+  	slicenum += t;
+  	if (!(Psi_star.slice(t).is_symmetric())) sym_test(Psi_star.slice(t), slicenum);
   	Gt_i.slice(t) = inv(riwish(nu_Gt_star, Psi_star.slice(t)));
   }
 }
