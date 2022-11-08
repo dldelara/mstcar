@@ -1,5 +1,3 @@
-//[[Rcpp::plugins(openmp)]]
-#include <omp.h>
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include "update_helper.h"
@@ -13,8 +11,6 @@ void update_theta(arma::cube& theta,
 	arma::cube gamma,                                // hyperparameters
 	int Ng, int Nt, int Ns, Rcpp::String method      // metaparameters
 ) {
-	//omp_set_num_threads(16);
-	//#pragma omp parallel for
 	for (int i = 0; i < Ng * Nt * Ns; i++) {
 		double theta_star = R::rnorm(theta[i], gamma[i]);
 		double r_t = Y[i] * (theta_star - theta[i]);
@@ -44,8 +40,6 @@ void update_tau2(arma::rowvec& tau2,
 	int Ng, int Nt, int Ns                          // metaparameters
 ) {
 	double at_star = (Ns * Nt) / 2 + at;
-	//omp_set_num_threads(8);
-	//#pragma omp parallel for
 	for (int g = 0; g < Ng; g++) {
 		double tbz = 0;
 		for (int i = 0; i < Nt * Ns; i++) tbz += pow(theta.row(g)[i] - beta.row(g)[i % Nt] - z.row(g)[i], 2);
@@ -129,8 +123,6 @@ void update_rho(arma::rowvec& rho,
 	int Ng, int Nt, int Ns, int I,                   // metaparameters
 	arma::field<arma::uvec> neigh, arma::vec num     // adjacency
 ) {
-	//omp_set_num_threads(8);
-	//#pragma omp parallel for
 	for (int k = 0; k < Ng; k++) {
 	  rowvec rho_star = rho;
 	  rho_star[k]     = expit(R::rnorm(logit(rho[k]), delta[k]));
