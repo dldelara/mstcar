@@ -347,17 +347,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sym_test
-void sym_test(arma::mat& A, Rcpp::String param);
-RcppExport SEXP _mstcar_sym_test(SEXP ASEXP, SEXP paramSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< Rcpp::String >::type param(paramSEXP);
-    sym_test(A, param);
-    return R_NilValue;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_acpt_cube", (DL_FUNC) &_mstcar_acpt_cube, 4},
@@ -382,7 +371,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_mstcar_mat2vec", (DL_FUNC) &_mstcar_mat2vec, 1},
     {"_mstcar_vec2mat", (DL_FUNC) &_mstcar_vec2mat, 3},
     {"_mstcar_Sig_eta_i", (DL_FUNC) &_mstcar_Sig_eta_i, 3},
-    {"_mstcar_sym_test", (DL_FUNC) &_mstcar_sym_test, 2},
     {NULL, NULL, 0}
 };
 
