@@ -110,7 +110,7 @@ void update_z(arma::cube& z,
 	Taukt_mat.diag() = repmat(1 / tau2, 1, Nt);
 	for (int i = 0; i < Ns; i++) {
 		mat Sig_z_star = Taukt_mat + num[i] * Sei;
-		//if (!(Sig_z_star.is_symmetric())) sym_test(Sig_z_star, "z");
+		if (!(Sig_z_star.is_symmetric())) sym_test(Sig_z_star, "z");
 		Sig_z_star     = inv(Sig_z_star);
 		vec sum_zj     = mat2vec((mat)sum(z.slices(neigh[i]), 2));
 		vec phi_star   = Sig_z_star * (Taukt_mat * mat2vec(theta.slice(i) - beta) + Sei * sum_zj);
